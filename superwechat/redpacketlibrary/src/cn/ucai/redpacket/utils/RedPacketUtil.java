@@ -1,4 +1,4 @@
-package com.easemob.redpacket.utils;
+package cn.ucai.redpacket.utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,10 +20,10 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMCmdMessageBody;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMMessage;
-import com.hyphenate.easeui.EaseConstant;
-import com.hyphenate.easeui.domain.EaseUser;
-import com.hyphenate.easeui.utils.EaseUserUtils;
-import com.hyphenate.easeui.widget.EaseChatMessageList;
+import cn.ucai.easeui.EaseConstant;
+import cn.ucai.easeui.domain.EaseUser;
+import cn.ucai.easeui.utils.EaseUserUtils;
+import cn.ucai.easeui.widget.EaseChatMessageList;
 import com.hyphenate.exceptions.HyphenateException;
 
 import java.util.ArrayList;
