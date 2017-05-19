@@ -4,18 +4,19 @@
     android:layout_height="match_parent"
     android:background="#eff2f6"
     android:orientation="vertical" >
-
     <RelativeLayout
+        android:id="@+id/layout_back_Title"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1" >
-
+        android:layout_height="40dp"
+        android:background="@color/black"
+        >
         <ImageView
+            android:id="@+id/backAra"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"
-            android:src="@drawable/em_welcom_logo" />
+            android:src="@drawable/icon_back"
+            android:layout_centerVertical="true"
+            />
     </RelativeLayout>
 
     <RelativeLayout
@@ -24,6 +25,7 @@
         android:layout_weight="1" >
 
         <RelativeLayout
+            android:layout_marginTop="20dp"
             android:id="@+id/rl_username"
             android:layout_width="match_parent"
             android:layout_height="54dp"
@@ -86,36 +88,19 @@
                 android:imeOptions="actionDone"/>
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@id/rl_password"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="30dp"
-            android:orientation="horizontal" >
-
+             >
             <Button
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
                 android:layout_marginRight="10dip"
-                android:layout_weight="1"
-                android:background="@drawable/em_button_register_bg"
-                android:gravity="center"
-                android:onClick="register"
-                android:paddingBottom="7dp"
-                android:paddingTop="7dp"
-                android:text="@string/register"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:layout_marginRight="10dip"
-                android:layout_weight="1"
                 android:background="@drawable/em_button_login_bg"
                 android:gravity="center"
                 android:onClick="login"
@@ -124,7 +109,24 @@
                 android:text="@string/login"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
-        </LinearLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:background="@drawable/em_button_register_bg"
+                android:gravity="center"
+                android:onClick="register"
+                android:paddingBottom="7dp"
+                android:text="@string/register"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="30dp" />
+        </RelativeLayout>
+
+
     </RelativeLayout>
 
 </LinearLayout>
