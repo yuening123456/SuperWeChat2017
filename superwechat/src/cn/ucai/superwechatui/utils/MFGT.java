@@ -8,6 +8,7 @@ import cn.ucai.superwechatui.R;
 import cn.ucai.superwechatui.ui.GuideActivity;
 import cn.ucai.superwechatui.ui.LoginActivity;
 import cn.ucai.superwechatui.ui.MainActivity;
+import cn.ucai.superwechatui.ui.RecorderVideoActivity;
 import cn.ucai.superwechatui.ui.SplashActivity;
 
 /**
@@ -25,5 +26,13 @@ public class MFGT  {
 
     public static void gotoMain(SplashActivity activity) {
         startActivity(activity, MainActivity.class);
+    }
+
+    public static void gotoLogin(GuideActivity activity) {
+        startActivity(activity,LoginActivity.class);
+    }
+
+    public static void gotoRegister(GuideActivity activity) {
+        startActivity(activity, RecorderVideoActivity.class);
     }
 }

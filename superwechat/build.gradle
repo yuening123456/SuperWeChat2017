@@ -4,6 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
+
         classpath 'com.android.tools.build:gradle:2.3.1'
     }
 }
@@ -83,4 +84,6 @@ dependencies {
     //    }
     compile files('libs/android-support-multidex.jar')
     compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }
