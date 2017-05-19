@@ -82,4 +82,5 @@ dependencies {
     //        exclude module: 'support-v4'
     //    }
     compile files('libs/android-support-multidex.jar')
+    compile 'com.android.support:appcompat-v7:25.3.1'
 }
