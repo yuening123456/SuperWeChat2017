@@ -17,6 +17,12 @@ import cn.ucai.superwechatui.ui.SplashActivity;
  */
 
 public class MFGT  {
+
+    public static void finish(Activity activity) {
+        activity.finish();
+        activity.overridePendingTransition(R.anim.push_right_in,R.anim.push_right_out);
+
+    }
     private static void startActivity(Context context,Class clazz){
         context.startActivity(new Intent(context,clazz));
         ((Activity)context).overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
@@ -36,4 +42,6 @@ public class MFGT  {
     public static void gotoRegister(GuideActivity activity) {
         startActivity(activity, RegisterActivity.class);
     }
+
+
 }
