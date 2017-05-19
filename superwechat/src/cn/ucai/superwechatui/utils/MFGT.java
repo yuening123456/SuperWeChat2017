@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import cn.ucai.superwechatui.R;
+import cn.ucai.superwechatui.ui.GuideActivity;
 import cn.ucai.superwechatui.ui.LoginActivity;
 import cn.ucai.superwechatui.ui.MainActivity;
 import cn.ucai.superwechatui.ui.SplashActivity;
@@ -18,8 +19,8 @@ public class MFGT  {
         context.startActivity(new Intent(context,clazz));
         ((Activity)context).overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
     }
-    public static void gotoLogin(Activity activity) {
-        startActivity(activity, LoginActivity.class);
+    public static void gotoGuide(Activity activity) {
+        startActivity(activity, GuideActivity.class);
     }
 
     public static void gotoMain(SplashActivity activity) {
