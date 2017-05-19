@@ -10,9 +10,9 @@ import cn.ucai.superwechatui.data.OnCompleteListener;
  */
 
 public interface IUserModel {
-   public void register(Context context, String username, String nickname, String password,
+ void register(Context context, String username, String nickname, String password,
                   OnCompleteListener listener);
 
-    public void unRegister(Context context, String username, OnCompleteListener listener);
+    void unRegister(Context context, String username, OnCompleteListener listener);
 
 }
