@@ -53,6 +53,33 @@
                 android:singleLine="true"
                 android:textSize="18sp" />
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="#fff" >
+            <ImageView
+                android:id="@+id/iv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dip"
+                android:src="@drawable/em_icon_account" />
+
+            <EditText
+                android:id="@+id/user_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/iv_username"
+                android:background="@null"
+                android:hint="@string/nickname"
+                android:paddingLeft="10dip"
+                android:singleLine="true"
+                android:textSize="18sp" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
