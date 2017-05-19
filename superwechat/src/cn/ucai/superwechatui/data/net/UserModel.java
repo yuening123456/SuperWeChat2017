@@ -14,7 +14,7 @@ import cn.ucai.superwechatui.widget.I;
 public class UserModel implements IUserModel {
     @Override
     public void register(Context context, String username, String nickname,
-                         String password, OnCompleteListener listener) {
+                         String password, OnCompleteListener<String> listener) {
         OkHttpUtils<String > utils =new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_REGISTER)
                 .addParam(I.User.USER_NAME,username)

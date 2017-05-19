@@ -11,8 +11,8 @@ import cn.ucai.superwechatui.data.OnCompleteListener;
 
 public interface IUserModel {
  void register(Context context, String username, String nickname, String password,
-                  OnCompleteListener listener);
+                  OnCompleteListener<String> listener);
 
-    void unRegister(Context context, String username, OnCompleteListener listener);
+    void unRegister(Context context, String username, OnCompleteListener<String> listener);
 
 }

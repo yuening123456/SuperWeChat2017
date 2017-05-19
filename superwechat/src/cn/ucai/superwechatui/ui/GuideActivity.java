@@ -23,13 +23,13 @@ public class GuideActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.btn_login, R.id.splash_root})
+    @OnClick({R.id.btn_login, R.id.btn_register})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
                 MFGT.gotoLogin(GuideActivity.this);
                 break;
-            case R.id.splash_root:
+            case R.id.btn_register:
                 MFGT.gotoRegister(GuideActivity.this);
                 break;
         }
