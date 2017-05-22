@@ -17,6 +17,12 @@
             android:src="@drawable/icon_back"
             android:layout_centerVertical="true"
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="登录"
+            android:textColor="@color/white"/>
     </RelativeLayout>
 
     <RelativeLayout

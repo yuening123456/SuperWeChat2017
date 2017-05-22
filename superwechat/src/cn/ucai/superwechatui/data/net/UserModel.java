@@ -4,6 +4,7 @@ import android.content.Context;
 
 import cn.ucai.superwechatui.data.OkHttpUtils;
 import cn.ucai.superwechatui.data.OnCompleteListener;
+import cn.ucai.superwechatui.data.Result;
 import cn.ucai.superwechatui.widget.I;
 
 
@@ -22,6 +23,16 @@ public class UserModel implements IUserModel {
                 .addParam(I.User.PASSWORD,password)
                 .targetClass(String.class)
                 .post()
+                .execute(listener);
+
+    }
+
+    @Override
+    public void loadUserInfo(Context context, String username, OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils =new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_FIND_USER)
+                .addParam(I.User.USER_NAME,username)
+                .targetClass(String.class)
                 .execute(listener);
 
     }
