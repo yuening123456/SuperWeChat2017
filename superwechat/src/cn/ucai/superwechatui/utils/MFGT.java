@@ -31,15 +31,15 @@ public class MFGT  {
         startActivity(activity, GuideActivity.class);
     }
 
-    public static void gotoMain(SplashActivity activity) {
+    public static void gotoMain(Activity activity) {
         startActivity(activity, MainActivity.class);
     }
 
-    public static void gotoLogin(GuideActivity activity) {
+    public static void gotoLogin(Activity activity) {
         startActivity(activity,LoginActivity.class);
     }
 
-    public static void gotoRegister(GuideActivity activity) {
+    public static void gotoRegister(Activity activity) {
         startActivity(activity, RegisterActivity.class);
     }
 
