@@ -115,24 +115,23 @@
                 android:text="@string/login"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:layout_marginRight="10dip"
-                android:background="@drawable/em_button_register_bg"
-                android:gravity="center"
-                android:onClick="register"
-                android:paddingBottom="7dp"
-                android:text="@string/register"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="30dp" />
+
         </RelativeLayout>
-
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/em_button_register_bg"
+            android:gravity="center"
+            android:onClick="register"
+            android:paddingBottom="7dp"
+            android:text="@string/register"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp" />
     </RelativeLayout>
 
 </LinearLayout>

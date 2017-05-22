@@ -20,6 +20,12 @@
             android:src="@drawable/icon_back"
             android:layout_centerVertical="true"
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注册"
+            android:textColor="@color/white"
+            android:layout_centerInParent="true"/>
     </RelativeLayout>
     <LinearLayout
         android:layout_marginTop="20dp"
