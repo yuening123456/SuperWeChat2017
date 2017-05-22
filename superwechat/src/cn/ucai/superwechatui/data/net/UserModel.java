@@ -28,7 +28,8 @@ public class UserModel implements IUserModel {
     }
 
     @Override
-    public void loadUserInfo(Context context, String username, OnCompleteListener<String> listener) {
+    public void loadUserInfo(Context context, String username,
+                             OnCompleteListener<String> listener) {
         OkHttpUtils<String> utils =new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_USER)
                 .addParam(I.User.USER_NAME,username)
