@@ -69,10 +69,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.SettingsActivity" />
         <!-- 开屏页 -->
         <activity
             android:name=".ui.GuideActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide">
+        </activity>
+        <activity
+            android:name=".ui.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide">
         </activity>

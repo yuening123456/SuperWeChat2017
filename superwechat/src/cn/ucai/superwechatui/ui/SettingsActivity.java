@@ -128,7 +128,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void onCreate(Bundle arg0) {
-
         super.onCreate(arg0);
         setContentView(R.layout.em_fragment_conversation_settings);
         if (arg0 != null && arg0.getBoolean("isConflict", false))
@@ -205,6 +204,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         ll_call_option.setOnClickListener(this);
         llChange.setOnClickListener(this);
         rl_mail_log.setOnClickListener(this);
+        //系统键盘
         getWindow().getAttributes().softInputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN;
 
         // the vibrate and sound notification are allowed or not?
