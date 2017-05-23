@@ -1,5 +1,6 @@
 package cn.ucai.superwechatui.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.easemob.redpacketui.utils.RPRedPacketUtil;
+import com.hyphenate.chat.EMClient;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -102,7 +104,7 @@ public class ContactFragment extends EaseBaseFragment {
 //				RPRedPacketUtil.getInstance().startChangeActivity(getActivity());
                 break;
             case R.id.txt_setting:
-                MFGT.gotoSetting((MainActivity) getContext());
+                MFGT.gotoSettings(getActivity());
                 break;
         }
     }
@@ -119,6 +121,7 @@ public class ContactFragment extends EaseBaseFragment {
 
     @OnClick(R.id.layout_Username)
     public void onViewClicked() {
-        MFGT.gotoUserProfile(getActivity());
+        startActivity(new Intent(getActivity(), UserProfileActivity.class).putExtra("setting", true)
+                .putExtra("username", EMClient.getInstance().getCurrentUser()));
     }
 }

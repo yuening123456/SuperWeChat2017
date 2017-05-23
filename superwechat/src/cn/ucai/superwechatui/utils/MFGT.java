@@ -20,11 +20,13 @@ import cn.ucai.superwechatui.ui.UserProfileActivity;
  */
 
 public class MFGT  {
-
     public static void finish(Activity activity) {
         activity.finish();
         activity.overridePendingTransition(R.anim.push_right_in,R.anim.push_right_out);
-
+    }
+    public static void startActivity(Context context,Intent intent){
+        context.startActivity(intent);
+        ((Activity)context).overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
     }
     private static void startActivity(Context context,Class clazz){
         context.startActivity(new Intent(context,clazz));
@@ -46,12 +48,12 @@ public class MFGT  {
         startActivity(activity, RegisterActivity.class);
     }
 
-
-    public static void gotoSetting(Activity activity) {
+    public static void gotoSettings(Activity activity) {
         startActivity(activity, SettingsActivity.class);
     }
 
-    public static void gotoUserProfile(Activity activity) {
-        startActivity(activity, UserProfileActivity.class);
+    public static void logout(Activity activity){
+        startActivity(activity,new Intent(activity,LoginActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_SINGLE_TOP));
     }
 }

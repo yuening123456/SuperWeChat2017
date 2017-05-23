@@ -447,7 +447,9 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                         pd.dismiss();
                         // show login screen
                         finish();
-                        startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
+                        MFGT.logout(SettingsActivity.this);
+                        //startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
+
 
                     }
                 });
