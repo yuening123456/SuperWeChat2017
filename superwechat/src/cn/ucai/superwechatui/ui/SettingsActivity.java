@@ -444,8 +444,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             public void onSuccess() {
                runOnUiThread(new Runnable() {
                     public void run() {
-                        pd.dismiss();
-                        // show login screen
+                        pd.dismiss();// show login screen
                         finish();
                         MFGT.logout(SettingsActivity.this);
                         //startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
