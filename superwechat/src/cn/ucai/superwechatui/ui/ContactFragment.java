@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +18,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.ucai.easeui.domain.User;
 import cn.ucai.easeui.ui.EaseBaseFragment;
+import cn.ucai.easeui.widget.EaseTitleBar;
 import cn.ucai.superwechatui.Constant;
 import cn.ucai.superwechatui.R;
 import cn.ucai.superwechatui.SuperWeChatHelper;
@@ -34,6 +36,22 @@ public class ContactFragment extends EaseBaseFragment {
     @BindView(R.id.tv_wexinhao)
     TextView tvWexinhao;
     Unbinder bind;
+    @BindView(R.id.title_bar)
+    EaseTitleBar titleBar;
+    @BindView(R.id.txt_photo)
+    TextView txtPhoto;
+    @BindView(R.id.txt_collect)
+    TextView txtCollect;
+    @BindView(R.id.txt_money)
+    TextView txtMoney;
+    @BindView(R.id.txt_card)
+    TextView txtCard;
+    @BindView(R.id.txt_smail)
+    TextView txtSmail;
+    @BindView(R.id.txt_setting)
+    TextView txtSetting;
+    @BindView(R.id.layout_contact)
+    ScrollView layoutContact;
 
     @Nullable
     @Override
@@ -53,13 +71,13 @@ public class ContactFragment extends EaseBaseFragment {
         titleBar.setRightImageResource(R.drawable.em_add);
         titleBar.setTitle(getString(R.string.me));
         User user = SuperWeChatHelper.getInstance().getUserProfileManager().getCurrentAppUserInfo();
-        if(user!=null){
+        if (user != null) {
             tvNickname.setText(user.getMUserNick());
-            tvWexinhao.setText("微信号："+user.getMUserName());
-            if(!TextUtils.isEmpty(user.getAvatar())){
+            tvWexinhao.setText("微信号：" + user.getMUserName());
+            if (!TextUtils.isEmpty(user.getAvatar())) {
                 Glide.with(getContext()).load(user.getAvatar()).placeholder(R.drawable.em_default_avatar).
                         into(ivAvatar);
-            }else{
+            } else {
                 Glide.with(getContext()).load(R.drawable.em_default_avatar).into(ivAvatar);
             }
         }
@@ -74,16 +92,17 @@ public class ContactFragment extends EaseBaseFragment {
     }
 
     @OnClick({R.id.txt_money, R.id.txt_setting})
-    public void onViewClicked(View view) {
+    public void onClicked(View view) {
         switch (view.getId()) {
             case R.id.txt_money:
                 break;
             case R.id.txt_setting:
-                MFGT.gotoSetting((MainActivity)getContext());
+                MFGT.gotoSetting((MainActivity) getContext());
                 break;
         }
     }
-       @Override
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (((MainActivity) getActivity()).isConflict) {
@@ -91,5 +110,10 @@ public class ContactFragment extends EaseBaseFragment {
         } else if (((MainActivity) getActivity()).getCurrentAccountRemoved()) {
             outState.putBoolean(Constant.ACCOUNT_REMOVED, true);
         }
+    }
+
+    @OnClick(R.id.layout_Username)
+    public void onViewClicked() {
+        MFGT.gotoUserProfile(getActivity());
     }
 }

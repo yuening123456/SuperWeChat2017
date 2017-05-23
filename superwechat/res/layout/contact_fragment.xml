@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
        <RelativeLayout
+           android:id="@+id/layout_Username"
            android:layout_marginTop="10dp"
            android:layout_width="match_parent"
            android:layout_height="wrap_content">

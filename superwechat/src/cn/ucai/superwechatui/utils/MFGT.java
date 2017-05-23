@@ -3,6 +3,7 @@ package cn.ucai.superwechatui.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 
 import cn.ucai.superwechatui.R;
 import cn.ucai.superwechatui.ui.GuideActivity;
@@ -12,6 +13,7 @@ import cn.ucai.superwechatui.ui.RecorderVideoActivity;
 import cn.ucai.superwechatui.ui.RegisterActivity;
 import cn.ucai.superwechatui.ui.SettingsActivity;
 import cn.ucai.superwechatui.ui.SplashActivity;
+import cn.ucai.superwechatui.ui.UserProfileActivity;
 
 /**
  * Created by Administrator on 2017/5/19 0019.
@@ -47,5 +49,9 @@ public class MFGT  {
 
     public static void gotoSetting(Activity activity) {
         startActivity(activity, SettingsActivity.class);
+    }
+
+    public static void gotoUserProfile(Activity activity) {
+        startActivity(activity, UserProfileActivity.class);
     }
 }
