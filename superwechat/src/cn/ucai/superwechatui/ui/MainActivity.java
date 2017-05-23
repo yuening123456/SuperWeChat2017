@@ -168,14 +168,15 @@ public class MainActivity extends BaseActivity {
         conversationListFragment = new ConversationListFragment();
         contactListFragment = new ContactListFragment();
         dicoverFragment = new DicoverFragment();
-        SettingsFragment settingFragment = new SettingsFragment();
-        fragments = new Fragment[]{conversationListFragment, contactListFragment, dicoverFragment, settingFragment};
+        contactFragment=new ContactFragment();
+        fragments = new Fragment[]{conversationListFragment, contactListFragment, dicoverFragment, contactFragment};
         adapter = new MainTabAdpter(getSupportFragmentManager());
         adapter.addFragment(conversationListFragment, getString(R.string.app_name));
         adapter.addFragment(contactListFragment, getString(R.string.contacts));
         adapter.addFragment(dicoverFragment, getString(R.string.discover));
-        adapter.addFragment(settingFragment, getString(R.string.me));
+        adapter.addFragment(contactFragment, getString(R.string.me));
         mLayoutViewpage.setAdapter(adapter);
+        layoutTabhost.setChecked(0);
 
        /* getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, conversationListFragment)
                 .add(R.id.fragment_container, contactListFragment).hide(contactListFragment).show(conversationListFragment)
@@ -372,7 +373,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @OnClick({R.id.btn_conversion, R.id.btn_contact_list, R.id.btn_dicover, R.id.btn_setting})
-    public void onViewClicked(View view) {
+    public void onClicked(View view) {
         initTabbtn();
         switch (view.getId()) {
             case R.id.btn_conversion:
@@ -566,7 +567,7 @@ public class MainActivity extends BaseActivity {
     private ConversationListFragment conversationListFragment;
     private ContactListFragment contactListFragment;
     private DicoverFragment dicoverFragment;
-    private SettingsFragment settingFragment;
+   private  ContactFragment contactFragment;
     private BroadcastReceiver broadcastReceiver;
     private LocalBroadcastManager broadcastManager;
 
