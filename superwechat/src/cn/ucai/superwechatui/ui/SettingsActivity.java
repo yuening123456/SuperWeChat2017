@@ -21,7 +21,9 @@ import android.os.Environment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -126,10 +128,12 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void onCreate(Bundle arg0) {
+
         super.onCreate(arg0);
         setContentView(R.layout.em_fragment_conversation_settings);
         if (arg0 != null && arg0.getBoolean("isConflict", false))
             return;
+        
         rl_switch_notification = (RelativeLayout) findViewById(R.id.rl_switch_notification);
         rl_switch_sound = (RelativeLayout) findViewById(R.id.rl_switch_sound);
         rl_switch_vibrate = (RelativeLayout) findViewById(R.id.rl_switch_vibrate);
@@ -201,6 +205,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         ll_call_option.setOnClickListener(this);
         llChange.setOnClickListener(this);
         rl_mail_log.setOnClickListener(this);
+        getWindow().getAttributes().softInputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN;
 
         // the vibrate and sound notification are allowed or not?
         if (settingsModel.getSettingMsgNotification()) {
@@ -288,7 +293,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         });
     }
 
-    
+   
 
 
     @Override
