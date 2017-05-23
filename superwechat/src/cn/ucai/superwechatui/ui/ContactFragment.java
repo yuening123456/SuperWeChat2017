@@ -19,6 +19,7 @@ import cn.ucai.easeui.domain.User;
 import cn.ucai.easeui.ui.EaseBaseFragment;
 import cn.ucai.superwechatui.R;
 import cn.ucai.superwechatui.SuperWeChatHelper;
+import cn.ucai.superwechatui.utils.MFGT;
 
 /**
  * Created by Administrator on 2017/5/23 0023.
@@ -77,6 +78,7 @@ public class ContactFragment extends EaseBaseFragment {
             case R.id.txt_money:
                 break;
             case R.id.txt_setting:
+                MFGT.gotoSetting((MainActivity)getContext());
                 break;
         }
     }
