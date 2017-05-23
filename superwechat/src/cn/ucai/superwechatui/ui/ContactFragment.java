@@ -17,6 +17,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.ucai.easeui.domain.User;
 import cn.ucai.easeui.ui.EaseBaseFragment;
+import cn.ucai.superwechatui.Constant;
 import cn.ucai.superwechatui.R;
 import cn.ucai.superwechatui.SuperWeChatHelper;
 import cn.ucai.superwechatui.utils.MFGT;
@@ -80,6 +81,15 @@ public class ContactFragment extends EaseBaseFragment {
             case R.id.txt_setting:
                 MFGT.gotoSetting((MainActivity)getContext());
                 break;
+        }
+    }
+       @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (((MainActivity) getActivity()).isConflict) {
+            outState.putBoolean("isConflict", true);
+        } else if (((MainActivity) getActivity()).getCurrentAccountRemoved()) {
+            outState.putBoolean(Constant.ACCOUNT_REMOVED, true);
         }
     }
 }

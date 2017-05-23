@@ -10,6 +10,7 @@ import cn.ucai.superwechatui.ui.LoginActivity;
 import cn.ucai.superwechatui.ui.MainActivity;
 import cn.ucai.superwechatui.ui.RecorderVideoActivity;
 import cn.ucai.superwechatui.ui.RegisterActivity;
+import cn.ucai.superwechatui.ui.SettingsActivity;
 import cn.ucai.superwechatui.ui.SplashActivity;
 
 /**
@@ -44,4 +45,7 @@ public class MFGT  {
     }
 
 
+    public static void gotoSetting(Activity activity) {
+        startActivity(activity, SettingsActivity.class);
+    }
 }

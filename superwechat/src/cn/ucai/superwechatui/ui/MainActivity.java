@@ -594,9 +594,9 @@ public class MainActivity extends BaseActivity {
             try {
                 if (exceptionBuilder == null)
                     exceptionBuilder = new AlertDialog.Builder(MainActivity.this);
-                exceptionBuilder.setTitle(st);
-                exceptionBuilder.setMessage(getExceptionMessageId(exceptionType));
-                exceptionBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    exceptionBuilder.setTitle(st);
+                    exceptionBuilder.setMessage(getExceptionMessageId(exceptionType));
+                    exceptionBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
