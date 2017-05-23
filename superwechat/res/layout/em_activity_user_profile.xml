@@ -4,24 +4,25 @@
     android:layout_height="match_parent"
     android:background="#eff2f6"
     android:orientation="vertical" >
-    
-	<RelativeLayout
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg"
-        android:gravity="center_vertical" >
+
+    <RelativeLayout
+android:id="@+id/title"
+android:layout_width="match_parent"
+android:layout_height="@dimen/height_top_bar"
+android:background="@color/colorPrimary"
+android:gravity="center_vertical">
         <include layout="@layout/ease_commom_back_btn" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/title_user_profile"
-            android:textColor="#fff"
-            android:textSize="18sp" />
-    </RelativeLayout>
-    <LinearLayout 
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_centerInParent="true"
+android:text="@string/title_user_profile"
+android:textColor="#fff"
+android:textSize="18sp" />
+</RelativeLayout>
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
@@ -33,11 +34,19 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="头像"
+                android:layout_centerVertical="true"
+                android:textColor="#808080"
+                android:textSize="20sp"
+                android:layout_alignParentLeft="true"/>
             <ImageView 
                 android:id="@+id/user_head_avatar"
                 android:layout_width="60dip"
                 android:layout_height="60dip"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_margin="8dip"
                 android:scaleType="centerCrop"

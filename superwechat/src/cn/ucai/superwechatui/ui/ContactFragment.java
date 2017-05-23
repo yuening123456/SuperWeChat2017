@@ -11,6 +11,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.easemob.redpacketui.utils.RPRedPacketUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,6 +96,10 @@ public class ContactFragment extends EaseBaseFragment {
     public void onClicked(View view) {
         switch (view.getId()) {
             case R.id.txt_money:
+                //支付宝版红包SDK调用如下方法进入红包记录页面
+                RPRedPacketUtil.getInstance().startRecordActivity(getActivity());
+                //钱包版红包SDK调用如下方法进入零钱页面
+//				RPRedPacketUtil.getInstance().startChangeActivity(getActivity());
                 break;
             case R.id.txt_setting:
                 MFGT.gotoSetting((MainActivity) getContext());
