@@ -151,7 +151,7 @@ public class UserProfileActivity extends BaseActivity {
                             dialog.dismiss();
                             Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_success), Toast.LENGTH_SHORT)
                                     .show();
-                            mTvUserinfoName.setText(nickName);
+                            mTvUserinfoNick.setText(nickName);
                         }
                     });
                 }

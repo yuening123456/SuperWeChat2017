@@ -3,6 +3,9 @@ package cn.ucai.superwechatui.data.net;
 
 import android.content.Context;
 
+import java.io.File;
+
+import cn.ucai.easeui.domain.User;
 import cn.ucai.superwechatui.data.OnCompleteListener;
 import cn.ucai.superwechatui.data.Result;
 
@@ -16,5 +19,7 @@ public interface IUserModel {
 
     void unRegister(Context context, String username, OnCompleteListener<String> listener);
     void loadUserInfo(Context context,String username,OnCompleteListener<String> listener);
+    void updateUserNick(Context context , String username, String newnick, OnCompleteListener<String> listener);
+    void updateAvatar(Context context, String name, String avatarType, File file,OnCompleteListener<String> listener);
 
 }

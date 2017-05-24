@@ -2,6 +2,8 @@ package cn.ucai.superwechatui.data.net;
 
 import android.content.Context;
 
+import java.io.File;
+
 import cn.ucai.superwechatui.data.OkHttpUtils;
 import cn.ucai.superwechatui.data.OnCompleteListener;
 import cn.ucai.superwechatui.data.Result;
@@ -34,6 +36,30 @@ public class UserModel implements IUserModel {
         utils.setRequestUrl(I.REQUEST_FIND_USER)
                 .addParam(I.User.USER_NAME,username)
                 .targetClass(String.class)
+                .execute(listener);
+
+    }
+
+    @Override
+    public void updateUserNick(Context context, String username, String newnick, OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils =new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_UPDATE_USER_NICK)
+                .addParam(I.User.USER_NAME,username)
+                .addParam(I.User.NICK,newnick)
+                .targetClass(String.class)
+                .execute(listener);
+
+    }
+
+    @Override
+    public void updateAvatar(Context context, String name, String avatarType, File file, OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils =new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_UPDATE_AVATAR)
+                .addParam(I.NAME_OR_HXID,name)
+                .addParam(I.AVATAR_TYPE,avatarType)
+                .addFile2(file)
+                .targetClass(String.class)
+                .post()
                 .execute(listener);
 
     }
