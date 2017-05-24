@@ -2,13 +2,15 @@ package cn.ucai.superwechatui.ui;
 
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
@@ -21,7 +23,11 @@ import com.bumptech.glide.Glide;
 import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMClient;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +35,6 @@ import butterknife.OnClick;
 import cn.ucai.easeui.domain.EaseUser;
 import cn.ucai.easeui.domain.User;
 import cn.ucai.easeui.utils.EaseUserUtils;
-import cn.ucai.easeui.widget.EaseTitleBar;
 import cn.ucai.superwechatui.R;
 import cn.ucai.superwechatui.SuperWeChatHelper;
 import cn.ucai.superwechatui.data.OnCompleteListener;
@@ -37,6 +42,7 @@ import cn.ucai.superwechatui.data.Result;
 import cn.ucai.superwechatui.data.net.IUserModel;
 import cn.ucai.superwechatui.data.net.UserModel;
 import cn.ucai.superwechatui.utils.CommonUtils;
+import cn.ucai.superwechatui.utils.L;
 import cn.ucai.superwechatui.utils.MFGT;
 import cn.ucai.superwechatui.utils.ResultUtils;
 import cn.ucai.superwechatui.widget.I;
@@ -45,8 +51,6 @@ public class UserProfileActivity extends BaseActivity {
 
     private static final int REQUESTCODE_PICK = 1;
     private static final int REQUESTCODE_CUTTING = 2;
-    @BindView(R.id.title_bar)
-    EaseTitleBar titleBar;
     @BindView(R.id.iv_userinfo_avatar)
     ImageView mIvUserinfoAvatar;
     @BindView(R.id.tv_userinfo_nick)
@@ -54,18 +58,20 @@ public class UserProfileActivity extends BaseActivity {
     @BindView(R.id.tv_userinfo_name)
     TextView mTvUserinfoName;
     private ProgressDialog dialog;
-    User user=null;
+    User user = null;
     IUserModel model;
+    String avatarName;
+    UpdateAvatarBroadcastReceiver mReceiver;
 
 
     @Override
     protected void onCreate(Bundle arg0) {
-        super.onCreate(arg0);
         setContentView(R.layout.em_activity_user_profile);
         ButterKnife.bind(this);
+        super.onCreate(arg0);
         initListener();
-        user=SuperWeChatHelper.getInstance().getUserProfileManager().getCurrentAppUserInfo();
-        model=new UserModel();
+        user = SuperWeChatHelper.getInstance().getUserProfileManager().getCurrentAppUserInfo();
+        model = new UserModel();
     }
 
     private void initListener() {
@@ -73,7 +79,7 @@ public class UserProfileActivity extends BaseActivity {
         if (username!=null){
             mTvUserinfoName.setText("微信号: "+username);
             EaseUserUtils.setAppUserNick(username, mTvUserinfoNick);
-            EaseUserUtils.setAppUserAvatar(this,username, mIvUserinfoAvatar);
+            EaseUserUtils.setAppUserAvatar(this, username, mIvUserinfoAvatar);
 //            asyncFetchUserInfo(user.getMUserName());
         }
         titleBar.setLeftLayoutClickListener(new View.OnClickListener() {
@@ -82,6 +88,9 @@ public class UserProfileActivity extends BaseActivity {
                 MFGT.finish(UserProfileActivity.this);
             }
         });
+        mReceiver = new UpdateAvatarBroadcastReceiver();
+        IntentFilter filter = new IntentFilter(I.BROADCAST_UPDATE_AVATAR);
+        registerReceiver(mReceiver,filter);
     }
 
     public void asyncFetchUserInfo(String username) {
@@ -139,34 +148,35 @@ public class UserProfileActivity extends BaseActivity {
 
     private void updateRemoteNick(final String nickName) {
         dialog = ProgressDialog.show(this, getString(R.string.dl_update_nick), getString(R.string.dl_waiting));
-        model.updateUserNick(UserProfileActivity.this, user.getMUserName(), nickName, new OnCompleteListener<String>() {
-            @Override
-            public void onSuccess(String s) {
-                if(s!=null){
-                    Result result = ResultUtils.getResultFromJson(s, User.class);
-                    if(result!=null){
-                        if(result.getRetCode()== I.MSG_USER_SAME_NICK){
-                            CommonUtils.showLongToast(R.string.toast_nick_not_modfy);
-                        }else if(result.getRetCode()==I.MSG_USER_UPDATE_NICK_FAIL){
-                            CommonUtils.showLongToast(R.string.toast_updatenick_fail);
-                        }else if(result.isRetMsg()){
-                            CommonUtils.showLongToast(R.string.toast_updatenick_success);
-                            mTvUserinfoNick.setText(nickName);
-                            SuperWeChatHelper.getInstance().getUserProfileManager().updateCurrentAppUserNickName(nickName);
+
+        model.updateUserNick(UserProfileActivity.this, user.getMUserName(), nickName,
+                new OnCompleteListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        if (s!=null){
+                            Result<User> result = ResultUtils.getResultFromJson(s, User.class);
+                            if (result!=null){
+                                if (result.getRetCode() == I.MSG_USER_SAME_NICK){
+                                    CommonUtils.showLongToast(R.string.toast_nick_not_modfy);
+                                }else if (result.getRetCode() == I.MSG_USER_UPDATE_NICK_FAIL){
+                                    CommonUtils.showLongToast(R.string.toast_updatenick_fail);
+                                }else if (result.isRetMsg()){
+                                    CommonUtils.showLongToast(R.string.toast_updatenick_success);
+                                    mTvUserinfoNick.setText(nickName);
+                                    SuperWeChatHelper.getInstance().getUserProfileManager().updateCurrentAppUserNickName(nickName);
+                                }
+                            }
                         }
+                        dialog.dismiss();
                     }
-                    dialog.dismiss();
-                }
-            }
 
-            @Override
-            public void onError(String error) {
-                Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_fail), Toast.LENGTH_SHORT)
-                        .show();
-                dialog.dismiss();
-            }
-        });
-
+                    @Override
+                    public void onError(String error) {
+                        Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_fail), Toast.LENGTH_SHORT)
+                                .show();
+                        dialog.dismiss();
+                    }
+                });
     }
 
     @Override
@@ -211,10 +221,15 @@ public class UserProfileActivity extends BaseActivity {
         Bundle extras = picdata.getExtras();
         if (extras != null) {
             Bitmap photo = extras.getParcelable("data");
-            Drawable drawable = new BitmapDrawable(getResources(), photo);
-            mIvUserinfoAvatar.setImageDrawable(drawable);
-            uploadUserAvatar(Bitmap2Bytes(photo));
+            L.i("main","setPicToView="+photo);
+//            Drawable drawable = new BitmapDrawable(getResources(), photo);
+//            mIvUserinfoAvatar.setImageDrawable(drawable);
+//            uploadUserAvatar(Bitmap2Bytes(photo));
+            L.i("main","setPicToView="+saveBitmapFile(photo));
+            SuperWeChatHelper.getInstance().getUserProfileManager()
+                    .uploadAppUserAvatar(saveBitmapFile(photo));
         }
+
     }
 
     private void uploadUserAvatar(final byte[] data) {
@@ -272,7 +287,7 @@ public class UserProfileActivity extends BaseActivity {
                                     Toast.makeText(UserProfileActivity.this, getString(R.string.toast_nick_not_isnull), Toast.LENGTH_SHORT).show();
                                     return;
                                 }
-                                if(nickString.equals(user.getMUserNick())){
+                                if (nickString.equals(user.getMUserNick())){
                                     CommonUtils.showLongToast(R.string.toast_nick_not_modfy);
                                     return;
                                 }
@@ -280,6 +295,79 @@ public class UserProfileActivity extends BaseActivity {
                             }
                         }).setNegativeButton(R.string.dl_cancel, null).show();
                 break;
+        }
+    }
+
+    private String getAvatarName() {
+        avatarName = user.getMUserName()+ System.currentTimeMillis();
+        return avatarName;
+    }
+
+    /**
+     * 返回头像保存在sd卡的位置:
+     * Android/data/cn.ucai.superwechat/files/pictures/user_avatar
+     * @param context
+     * @param path
+     * @return
+     */
+    public static String getAvatarPath(Context context, String path){
+        File dir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File folder = new File(dir,path);
+        if(!folder.exists()){
+            folder.mkdir();
+        }
+        return folder.getAbsolutePath();
+    }
+
+    private File saveBitmapFile(Bitmap bitmap) {
+        if (bitmap != null) {
+            String imagePath = getAvatarPath(UserProfileActivity.this,I.AVATAR_TYPE)+"/"+getAvatarName()+".jpg";
+            File file = new File(imagePath);//将要保存图片的路径
+            L.e("file path="+file.getAbsolutePath());
+            try {
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                bos.flush();
+                bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return file;
+        }
+        return null;
+    }
+
+    class UpdateAvatarBroadcastReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            uploadAvatar(intent.getBooleanExtra(I.RESULT_UPDATE_AVATAR,false));
+        }
+    }
+
+    private void uploadAvatar(boolean isSuccess) {
+        if (isSuccess){
+            Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_success),
+                    Toast.LENGTH_SHORT).show();
+            EaseUserUtils.setAppUserAvatar(UserProfileActivity.this,user.getMUserName(),mIvUserinfoAvatar);
+        }else{
+            Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_fail),
+                    Toast.LENGTH_SHORT).show();
+        }
+        dismiss();
+    }
+
+    private void dismiss(){
+        if (dialog!=null && dialog.isShowing()){
+            dialog.dismiss();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mReceiver!=null){
+            unregisterReceiver(mReceiver);
         }
     }
 }

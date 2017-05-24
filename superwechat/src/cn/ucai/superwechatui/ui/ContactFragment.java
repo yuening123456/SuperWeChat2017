@@ -73,7 +73,6 @@ public class ContactFragment extends EaseBaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-            super.onResume();
             String username = EMClient.getInstance().getCurrentUser();
             if (username!=null){
                 tvWexinhao.setText("微信号: "+username);
