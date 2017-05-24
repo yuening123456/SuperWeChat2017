@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.ucai.easeui.domain.User;
 import cn.ucai.easeui.ui.EaseBaseFragment;
+import cn.ucai.easeui.utils.EaseUserUtils;
 import cn.ucai.easeui.widget.EaseTitleBar;
 import cn.ucai.superwechatui.Constant;
 import cn.ucai.superwechatui.R;
@@ -67,6 +68,18 @@ public class ContactFragment extends EaseBaseFragment {
     @Override
     protected void initView() {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+            super.onResume();
+            String username = EMClient.getInstance().getCurrentUser();
+            if (username!=null){
+                tvWexinhao.setText("微信号: "+username);
+                EaseUserUtils.setAppUserNick(username, tvNickname);
+                EaseUserUtils.setAppUserAvatar(getActivity(),username, ivAvatar);
+            }
     }
 
     @Override
