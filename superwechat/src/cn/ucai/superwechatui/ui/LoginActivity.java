@@ -53,8 +53,6 @@ import static android.R.attr.onClick;
 public class LoginActivity extends BaseActivity {
     private static final String TAG = "LoginActivity";
     public static final int REQUEST_CODE_SETNICK = 1;
-    @BindView(R.id.backAra)
-    ImageView backAra;
     @BindView(R.id.username)
     EditText usernameEditText;
     @BindView(R.id.password)
@@ -68,6 +66,8 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.em_activity_login);
+        bind = ButterKnife.bind(this);
         super.onCreate(savedInstanceState);
 
         // enter the main activity if already logged in
@@ -76,12 +76,20 @@ public class LoginActivity extends BaseActivity {
             MFGT.gotoMain(LoginActivity.this);
             return;
         }
-        setContentView(R.layout.em_activity_login);
-        bind = ButterKnife.bind(this);
+        initView();
         setListener();
         if (SuperWeChatHelper.getInstance().getCurrentUsernName() != null) {
             usernameEditText.setText(SuperWeChatHelper.getInstance().getCurrentUsernName());
         }
+    }
+
+    private void initView() {
+        titleBar.setLeftLayoutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void setListener() {// if user changed, clear the password
@@ -222,10 +230,6 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.backAra)
-    public void onBack() {
-        finish();
-    }
 
     @Override
     protected void onDestroy() {

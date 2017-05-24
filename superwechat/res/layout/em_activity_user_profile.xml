@@ -75,7 +75,8 @@
                     style="@style/list_txt_Style_without_nopadding_right"
                     android:layout_alignParentRight="true"
                     android:text="@string/userinfo_txt_nosettings"
-                    android:layout_width="wrap_content"/>
+                    android:layout_width="wrap_content"
+                    />
 
             </LinearLayout>
             <View
