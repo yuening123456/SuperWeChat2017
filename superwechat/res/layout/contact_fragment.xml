@@ -5,53 +5,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    <cn.ucai.easeui.widget.EaseTitleBar
-        android:id="@+id/title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+
     <ScrollView
         android:id="@+id/layout_contact"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
-        >
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-       <RelativeLayout
-           android:id="@+id/layout_Username"
-           android:layout_marginTop="10dp"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
-           <ImageView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-              android:src="@drawable/default_nor_avatar"
-             android:id="@+id/iv_avatar"
-               android:layout_marginLeft="10dp"
-               android:layout_centerVertical="true"/>
-           <TextView
-               android:id="@+id/tv_nickname"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_toRightOf="@+id/iv_avatar"
-               android:text="@string/nickname"
-               android:layout_marginLeft="20dp"
-               android:layout_marginTop="5dp"
-               android:textSize="18sp"/>
-           <TextView
-               android:id="@+id/tv_wexinhao"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_toRightOf="@+id/iv_avatar"
-               android:text="@string/nickname"
-               android:layout_marginLeft="20dp"
-               android:layout_marginTop="5dp"
-               android:layout_below="@id/tv_nickname"/>
 
-       </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/layout_Username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/default_nor_avatar" />
+
+                <TextView
+                    android:id="@+id/tv_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@+id/iv_avatar"
+                    android:text="@string/nickname"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_wexinhao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_nickname"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@+id/iv_avatar"
+                    android:text="@string/nickname" />
+
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/txt_photo"
                 style="@style/list_txt_Style"
@@ -95,6 +96,11 @@
                 android:text="@string/setting" />
         </LinearLayout>
     </ScrollView>
+
+    <cn.ucai.easeui.widget.EaseTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>
