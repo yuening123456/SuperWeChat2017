@@ -279,6 +279,11 @@
             android:name="cn.ucai.superwechatui.ui.UserProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" />
+        <!--  profile -->
+        <activity
+            android:name=".ui.ProfilesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" />
         <activity
             android:name="cn.ucai.superwechatui.ui.SetServersActivity"
             android:screenOrientation="portrait"

@@ -5,7 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-
+    <cn.ucai.easeui.widget.EaseTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
     <ScrollView
         android:id="@+id/layout_contact"
         android:layout_width="fill_parent"
@@ -97,10 +101,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <cn.ucai.easeui.widget.EaseTitleBar
-        android:id="@+id/title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>

@@ -100,34 +100,37 @@ public class AddContactActivity extends BaseActivity{
 	}
 
 	private void searchContactFromAppServer() {
+
         //initDialog();
 		model.loadUserInfo(AddContactActivity.this, toAddUsername, new OnCompleteListener<String>() {
 			@Override
 			public void onSuccess(String s) {
 				boolean isSuccess=false;
+                User user=null;
 				if(s!=null){
 					Result<User> result=ResultUtils.getResultFromJson(s,User.class);
                     if(result!=null&&result.isRetMsg()){
-                        User user=result.getRetData();
+                       user=result.getRetData();
                         if(user!=null){
                             isSuccess=true;
                         }
                     }
 				}
-				showSearchResult(isSuccess);
+				showSearchResult(isSuccess,user);
 			}
 
 			@Override
 			public void onError(String error) {
-                showSearchResult(false);
+                showSearchResult(false,null);
 			}
 		});
 	}
 
-    private void showSearchResult(boolean isSuccess) {
+    private void showSearchResult(boolean isSuccess,User user) {
         dissmissDialog();
         searchedUserLayout.setVisibility(isSuccess?View.GONE:View.VISIBLE);
         if(isSuccess){
+            MFGT.gotoProfiles(AddContactActivity.this,user) ;
 
         }
     }

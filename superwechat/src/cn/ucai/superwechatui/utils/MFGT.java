@@ -5,15 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 
+import cn.ucai.easeui.domain.User;
 import cn.ucai.superwechatui.R;
+import cn.ucai.superwechatui.ui.AddContactActivity;
 import cn.ucai.superwechatui.ui.GuideActivity;
 import cn.ucai.superwechatui.ui.LoginActivity;
 import cn.ucai.superwechatui.ui.MainActivity;
+import cn.ucai.superwechatui.ui.ProfilesActivity;
 import cn.ucai.superwechatui.ui.RecorderVideoActivity;
 import cn.ucai.superwechatui.ui.RegisterActivity;
 import cn.ucai.superwechatui.ui.SettingsActivity;
 import cn.ucai.superwechatui.ui.SplashActivity;
 import cn.ucai.superwechatui.ui.UserProfileActivity;
+import cn.ucai.superwechatui.widget.I;
 
 /**
  * Created by Administrator on 2017/5/19 0019.
@@ -55,5 +59,9 @@ public class MFGT  {
     public static void logout(Activity activity){
         startActivity(activity,new Intent(activity,LoginActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_SINGLE_TOP));
+    }
+
+    public static void gotoProfiles(Activity activity,User user) {
+        startActivity(activity,new Intent(activity,ProfilesActivity.class).putExtra(I.User.TABLE_NAME,user));
     }
 }
