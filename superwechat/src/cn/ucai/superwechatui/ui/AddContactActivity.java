@@ -52,6 +52,7 @@ public class AddContactActivity extends BaseActivity{
 
         model=new UserModel();
         initView();
+        titlBarsetListener();
 
 	}
 	private void initDialog(){
@@ -95,7 +96,7 @@ public class AddContactActivity extends BaseActivity{
 		// TODO you can search the user from your app server here.
         searchContactFromAppServer();
 		//show the userame and add button if user exist
-		searchedUserLayout.setVisibility(View.VISIBLE);
+		//searchedUserLayout.setVisibility(View.VISIBLE);
 		//nameText.setText(toAddUsername);
 	}
 
@@ -188,7 +189,5 @@ public class AddContactActivity extends BaseActivity{
 		}).start();*/
 	}
 	
-	public void back(View v) {
-		finish();
-	}
+
 }

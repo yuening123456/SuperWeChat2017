@@ -42,6 +42,7 @@ public class ProfilesActivity extends BaseActivity {
         super.onCreate(arg0);
         ButterKnife.bind(this);
         initData();
+        showLeftBack();
     }
 
     private void initData() {
@@ -52,6 +53,8 @@ public class ProfilesActivity extends BaseActivity {
             finish();
         }
     }
+
+
 
     private void showInfo() {
         tvUserinfoName.setText(user.getMUserName());
