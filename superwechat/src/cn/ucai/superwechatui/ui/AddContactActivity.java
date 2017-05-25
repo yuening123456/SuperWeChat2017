@@ -52,7 +52,7 @@ public class AddContactActivity extends BaseActivity{
 
         model=new UserModel();
         initView();
-        titlBarsetListener();
+       showLeftBack();
 
 	}
 	private void initDialog(){

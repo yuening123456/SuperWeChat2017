@@ -54,8 +54,6 @@ public class ProfilesActivity extends BaseActivity {
         }
     }
 
-
-
     private void showInfo() {
         tvUserinfoName.setText(user.getMUserName());
         tvUserinfoNick.setText(user.getMUserNick()==null?user.getMUserName():user.getMUserNick());
