@@ -475,8 +475,7 @@ public class MainActivity extends BaseActivity {
         runOnUiThread(new Runnable() {
             public void run() {
                 int count = getUnreadAddressCountTotal();
-                layoutTabhost.setHasNew(1,count>0);
-
+               layoutTabhost.setHasNew(1,count>0);
             }
         });
 
