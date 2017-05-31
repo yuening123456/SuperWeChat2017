@@ -2,26 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
     android:background="#f2f2f2"
-    android:orientation="vertical" >
-
-    <RelativeLayout
-        android:id="@+id/title"
+    android:orientation="vertical">
+    <cn.ucai.easeui.widget.EaseTitleBar
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg"
-        android:gravity="center_vertical" >
-
-        <include layout="@layout/ease_commom_back_btn" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/Application_and_notify"
-            android:textColor="#fff"
-            android:textSize="18sp" />
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        apps:titleBarTitle="@string/Application_and_notify"
+        android:id="@id/title_bar"
+        apps:titleBarLeftImage="@drawable/icon_back"/>
 
     <ListView
         android:id="@+id/list"

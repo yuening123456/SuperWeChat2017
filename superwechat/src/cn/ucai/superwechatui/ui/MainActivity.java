@@ -475,11 +475,8 @@ public class MainActivity extends BaseActivity {
         runOnUiThread(new Runnable() {
             public void run() {
                 int count = getUnreadAddressCountTotal();
-               /* if (count > 0) {
-                    unreadAddressLable.setVisibility(View.VISIBLE);
-                } else {
-                    unreadAddressLable.setVisibility(View.INVISIBLE);
-                }*/
+                layoutTabhost.setHasNew(1,count>0);
+
             }
         });
 
