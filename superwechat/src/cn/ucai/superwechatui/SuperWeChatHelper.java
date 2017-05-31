@@ -737,7 +737,6 @@ public class SuperWeChatHelper {
 
         @Override
         public void onContactAdded(String username) {
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
             userModel.addConact(appContext, EMClient.getInstance().getCurrentUser(), username, new OnCompleteListener<String>() {
                 @Override
                 public void onSuccess(String s) {
@@ -765,6 +764,7 @@ public class SuperWeChatHelper {
                 public void onError(String error) {
                 }
             });
+            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
         }
 
         @Override

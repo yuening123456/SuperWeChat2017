@@ -24,6 +24,7 @@ import cn.ucai.superwechatui.SuperWeChatHelper;
 
 import cn.ucai.superwechatui.db.InviteMessgeDao;
 import cn.ucai.superwechatui.db.UserDao;
+import cn.ucai.superwechatui.utils.L;
 import cn.ucai.superwechatui.widget.ContactItemView;
 import cn.ucai.easeui.domain.EaseUser;
 import cn.ucai.easeui.ui.EaseContactListFragment;
@@ -62,7 +63,7 @@ public class ContactListFragment extends EaseContactListFragment {
     @Override
     protected void initView() {
         super.initView();
-        @SuppressLint("InflateParams") View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.em_contacts_header, null);
+        @SuppressLint("Inf_lateParams") View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.em_contacts_header, null);
         HeaderItemClickListener clickListener = new HeaderItemClickListener();
         applicationItem = (ContactItemView) headerView.findViewById(R.id.application_item);
         applicationItem.setOnClickListener(clickListener);
@@ -121,6 +122,7 @@ public class ContactListFragment extends EaseContactListFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 EaseUser user = (EaseUser)listView.getItemAtPosition(position);
+                L.e("main","OnItemClick,user="+user.toString());
                 if (user != null) {
                     String username = user.getUsername();
                     // demo中直接进入聊天页面，实际一般是进入用户详情页
@@ -143,9 +145,9 @@ public class ContactListFragment extends EaseContactListFragment {
         contactSyncListener = new ContactSyncListener();
         SuperWeChatHelper.getInstance().addSyncContactListener(contactSyncListener);
         
-        blackListSyncListener = new BlackListSyncListener();
+     /*   blackListSyncListener = new BlackListSyncListener();
         SuperWeChatHelper.getInstance().addSyncBlackListListener(blackListSyncListener);
-        
+       */
         contactInfoSyncListener = new ContactInfoSyncListener();
         SuperWeChatHelper.getInstance().getUserProfileManager().addSyncContactInfoListener(contactInfoSyncListener);
         
@@ -163,7 +165,6 @@ public class ContactListFragment extends EaseContactListFragment {
             SuperWeChatHelper.getInstance().removeSyncContactListener(contactSyncListener);
             contactSyncListener = null;
         }
-        
         if(blackListSyncListener != null){
             SuperWeChatHelper.getInstance().removeSyncBlackListListener(blackListSyncListener);
         }
@@ -209,7 +210,7 @@ public class ContactListFragment extends EaseContactListFragment {
 		super.onCreateContextMenu(menu, v, menuInfo);
 	    toBeProcessUser = (EaseUser) listView.getItemAtPosition(((AdapterContextMenuInfo) menuInfo).position);
 	    toBeProcessUsername = toBeProcessUser.getUsername();
-		getActivity().getMenuInflater().inflate(R.menu.em_context_contact_list, menu);
+	    getActivity().getMenuInflater().inflate(R.menu.em_context_contact_list, menu);
 	}
 
 	@Override
@@ -225,10 +226,10 @@ public class ContactListFragment extends EaseContactListFragment {
                 e.printStackTrace();
             }
 			return true;
-		}else if(item.getItemId() == R.id.add_to_blacklist){
+		}/*else if(item.getItemId() == R.id.add_to_blacklist){
 			moveToBlacklist(toBeProcessUsername);
 			return true;
-		}
+		}*/
 		return super.onContextItemSelected(item);
 	}
 
