@@ -15,9 +15,13 @@ package cn.ucai.superwechatui.adapter;
 
 import java.util.List;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.hyphenate.chat.EMClient;
 
+import cn.ucai.easeui.domain.User;
+import cn.ucai.easeui.utils.EaseUserUtils;
 import cn.ucai.superwechatui.R;
+import cn.ucai.superwechatui.data.OkHttpUtils;
 import cn.ucai.superwechatui.db.InviteMessgeDao;
 import cn.ucai.superwechatui.domain.InviteMessage;
 
@@ -61,11 +65,12 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			holder.groupContainer = (LinearLayout) convertView.findViewById(R.id.ll_group);
 			holder.groupname = (TextView) convertView.findViewById(R.id.tv_groupName);
 			// holder.time = (TextView) convertView.findViewById(R.id.time);
+
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		
+		EaseUserUtils.setAvatar(context,messgeDao.getMessagesList().get(position).getAvatar(),holder.avator);
 		String str1 = context.getResources().getString(R.string.Has_agreed_to_your_friend_request);
 		String str2 = context.getResources().getString(R.string.agree);
 		

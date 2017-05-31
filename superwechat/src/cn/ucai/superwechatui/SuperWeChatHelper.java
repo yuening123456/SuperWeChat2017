@@ -13,6 +13,10 @@ import android.widget.Toast;
 import com.easemob.redpacketsdk.constant.RPConstant;
 
 import cn.ucai.easeui.domain.User;
+import cn.ucai.superwechatui.data.OnCompleteListener;
+import cn.ucai.superwechatui.data.Result;
+import cn.ucai.superwechatui.data.net.IUserModel;
+import cn.ucai.superwechatui.data.net.UserModel;
 import cn.ucai.superwechatui.db.SuperWeChatManager;
 import cn.ucai.superwechatui.domain.RobotUser;
 import cn.ucai.redpacket.utils.RedPacketUtil;
@@ -55,6 +59,8 @@ import cn.ucai.easeui.model.EaseAtMessageHelper;
 import cn.ucai.easeui.model.EaseNotifier;
 import cn.ucai.easeui.model.EaseNotifier.EaseNotificationInfoProvider;
 import cn.ucai.easeui.utils.EaseCommonUtils;
+import cn.ucai.superwechatui.utils.ResultUtils;
+
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
 
@@ -96,7 +102,7 @@ public class SuperWeChatHelper {
 	private static SuperWeChatHelper instance = null;
 	
 	private SuperWeChatModel demoModel = null;
-	
+	private IUserModel userModel;
 	/**
      * sync groups status listener
      */
@@ -151,6 +157,7 @@ public class SuperWeChatHelper {
 	 */
 	public void init(Context context) {
 	    demoModel = new SuperWeChatModel(context);
+        userModel=new UserModel();
 	    EMOptions options = initChatOptions();
 	    //use default options if options is null
 		if (EaseUI.getInstance().init(context, options)) {
@@ -805,11 +812,39 @@ public class SuperWeChatHelper {
      * save and notify invitation message
      * @param msg
      */
-    private void notifyNewInviteMessage(InviteMessage msg){
+    private void notifyNewInviteMessage(final InviteMessage msg){
         if(inviteMessgeDao == null){
             inviteMessgeDao = new InviteMessgeDao(appContext);
         }
-        inviteMessgeDao.saveMessage(msg);
+        userModel.loadUserInfo(appContext, msg.getFrom(), new OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                User user=new User(msg.getFrom());
+                msg.setNickname(user.getMUserNick());
+                msg.setAvatar(user.getAvatar());
+                if(s!=null){
+                    Result<User> result = ResultUtils.getResultFromJson(s, User.class);
+                    if(result!=null&&result.isRetMsg()){
+                        user=  result.getRetData();
+                        if(user!=null){
+                            msg.setNickname(user.getMUserNick());
+                            msg.setAvatar(user.getAvatar());
+                        }
+                    }
+
+                }
+                inviteMessgeDao.saveMessage(msg);
+            }
+
+            @Override
+            public void onError(String error) {
+                User user=new User(msg.getFrom());
+                msg.setNickname(user.getMUserNick());
+                msg.setAvatar(user.getAvatar());
+                inviteMessgeDao.saveMessage(msg);
+            }
+        });
+
         //increase the unread message count
         inviteMessgeDao.saveUnreadMessageCount(1);
         // notify there is new message
