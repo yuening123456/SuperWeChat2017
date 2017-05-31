@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.io.File;
 
+import cn.ucai.easeui.domain.User;
 import cn.ucai.superwechatui.data.OkHttpUtils;
 import cn.ucai.superwechatui.data.OnCompleteListener;
 import cn.ucai.superwechatui.data.Result;
@@ -62,6 +63,16 @@ public class UserModel implements IUserModel {
                 .post()
                 .execute(listener);
 
+    }
+
+    @Override
+    public void addConact(Context context, String name, String contactname, OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils =new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_ADD_CONTACT)
+                .addParam(I.Contact.USER_NAME,name)
+                .addParam(I.Contact.CU_NAME,contactname)
+                .targetClass(String.class)
+                .execute(listener);
     }
 
     @Override
