@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <cn.ucai.easeui.widget.EaseTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        apps:titleBarLeftImage="@drawable/em_mm_title_back"
+        apps:titleBarTitle="@string/vif_msg"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etMsg"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:id="@+id/btn_add_contact"
+        android:background="@drawable/btn_bg_green"
+        android:text="@string/userinfo_btn_add_contact"
+        android:textColor="@color/white"
+        android:textSize="20dp"/>
+
+
+</LinearLayout>

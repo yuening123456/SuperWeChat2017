@@ -14,6 +14,7 @@ import cn.ucai.superwechatui.ui.MainActivity;
 import cn.ucai.superwechatui.ui.ProfilesActivity;
 import cn.ucai.superwechatui.ui.RecorderVideoActivity;
 import cn.ucai.superwechatui.ui.RegisterActivity;
+import cn.ucai.superwechatui.ui.SendAddContactActivity;
 import cn.ucai.superwechatui.ui.SettingsActivity;
 import cn.ucai.superwechatui.ui.SplashActivity;
 import cn.ucai.superwechatui.ui.UserProfileActivity;
@@ -63,5 +64,10 @@ public class MFGT  {
 
     public static void gotoProfiles(Activity activity,User user) {
         startActivity(activity,new Intent(activity,ProfilesActivity.class).putExtra(I.User.TABLE_NAME,user));
+    }
+
+    public static void gotoSendMsg(ProfilesActivity activity, String username) {
+        startActivity(activity,new Intent(activity,SendAddContactActivity.class)
+        .putExtra(I.User.USER_NAME,username));
     }
 }

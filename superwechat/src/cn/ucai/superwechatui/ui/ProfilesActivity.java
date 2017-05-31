@@ -4,19 +4,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
-import java.io.Serializable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.easeui.domain.User;
 import cn.ucai.easeui.utils.EaseUserUtils;
+import cn.ucai.easeui.widget.EaseTitleBar;
 import cn.ucai.superwechatui.R;
 import cn.ucai.superwechatui.SuperWeChatHelper;
+import cn.ucai.superwechatui.utils.MFGT;
 import cn.ucai.superwechatui.widget.I;
 
 /**
@@ -36,7 +35,14 @@ public class ProfilesActivity extends BaseActivity {
     Button btnSendMsg;
     @BindView(R.id.btn_send_video)
     Button btnSendVideo;
-    User user=null;
+    User user = null;
+    @BindView(R.id.title_bar)
+    EaseTitleBar titleBar;
+    @BindView(R.id.view_user)
+    RelativeLayout viewUser;
+    @BindView(R.id.txt_note_mark)
+    TextView txtNoteMark;
+
     @Override
     protected void onCreate(Bundle arg0) {
         setContentView(R.layout.activity_profiles);
@@ -48,24 +54,28 @@ public class ProfilesActivity extends BaseActivity {
 
     private void initData() {
         user = (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
-        if(user!=null){
+        if (user != null) {
             showInfo();
-        }else{
+        } else {
             finish();
         }
     }
 
     private void showInfo() {
         tvUserinfoName.setText(user.getMUserName());
-        EaseUserUtils.setAppUserAvatar(ProfilesActivity.this,user,profileImage);
-        EaseUserUtils.setAppUserNick(user,tvUserinfoNick);
+        EaseUserUtils.setAppUserAvatar(ProfilesActivity.this, user, profileImage);
+        EaseUserUtils.setAppUserNick(user, tvUserinfoNick);
         showButton(SuperWeChatHelper.getInstance().getAppContactList().containsKey(user.getMUserName()));
     }
 
     private void showButton(boolean isContact) {
-        btnAddContact.setVisibility(isContact? View.GONE:View.VISIBLE);
-        btnSendMsg.setVisibility(isContact?View.VISIBLE:View.GONE);
-        btnSendVideo.setVisibility(isContact?View.VISIBLE:View.GONE);
+        btnAddContact.setVisibility(isContact ? View.GONE : View.VISIBLE);
+        btnSendMsg.setVisibility(isContact ? View.VISIBLE : View.GONE);
+        btnSendVideo.setVisibility(isContact ? View.VISIBLE : View.GONE);
     }
 
+    @OnClick(R.id.btn_add_contact)
+    public void sendMsg() {
+        MFGT.gotoSendMsg(ProfilesActivity.this,user.getMUserName());
+    }
 }
