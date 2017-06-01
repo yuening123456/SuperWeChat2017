@@ -165,7 +165,7 @@
     <string name="Cant_chat_with_yourself">不能和自己聊天</string>
     <string name="deleting">正在删除……</string>
     <string name="Delete_failed">删除失败:</string>
-    <string name="Is_moved_into_blacklist">正在移入黑名单……</string>
+    <string name="Is_moved_into_blacklist">正在……</string>
     <string name="Log_uploaded_successfully">日志上传成功</string>
     <string name="Log_Upload_failed">log上传失败</string>
     <string name="get_failed_please_check">获取失败,请检查网络或稍后再试</string>
