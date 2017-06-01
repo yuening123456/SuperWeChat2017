@@ -114,5 +114,7 @@ public class UserDao {
 	}
 
 
-
+    public void deleteAppContact(String username) {
+		SuperWeChatManager.getInstance().deleteAppContact(username);
+    }
 }

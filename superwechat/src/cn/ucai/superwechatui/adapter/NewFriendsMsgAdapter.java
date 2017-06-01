@@ -30,6 +30,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -70,7 +71,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		EaseUserUtils.setAvatar(context,messgeDao.getMessagesList().get(position).getAvatar(),holder.avator);
+
 		String str1 = context.getResources().getString(R.string.Has_agreed_to_your_friend_request);
 		String str2 = context.getResources().getString(R.string.agree);
 		
@@ -98,7 +99,9 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			
 			holder.reason.setText(msg.getReason());
 			//holder.name.setText(msg.getNickname());
-			EaseUserUtils.setNick(msg.getNickname(),holder.name);
+			Log.i("main",msg.getNickname());
+            EaseUserUtils.setAvatar(context,messgeDao.getMessagesList().get(position).getAvatar(),holder.avator);
+			EaseUserUtils.setAppUserNick(msg.getNickname(),holder.name);
 
 			// holder.time.setText(DateUtils.getTimestampString(new
 			// Date(msg.getTime())));

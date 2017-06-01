@@ -49,6 +49,7 @@ import cn.ucai.superwechatui.ui.MainActivity;
 import cn.ucai.superwechatui.ui.VideoCallActivity;
 import cn.ucai.superwechatui.ui.VoiceCallActivity;
 import cn.ucai.superwechatui.utils.CommonUtils;
+import cn.ucai.superwechatui.utils.L;
 import cn.ucai.superwechatui.utils.PreferenceManager;
 import cn.ucai.easeui.controller.EaseUI;
 import cn.ucai.easeui.controller.EaseUI.EaseEmojiconInfoProvider;
@@ -746,18 +747,21 @@ public class SuperWeChatHelper {
                             User user = result.getRetData();
                             if(user!=null){
                                 // save contact
-                                Map<String, User> localUsers = getAppContactList();
-                                Map<String, User> toAddUsers = new HashMap<String, User>();
-                                if (!localUsers.containsKey(user.getMUserName())) {
-                                    userDao.saveAppContact(user);
-                                }
-                                toAddUsers.put(user.getMUserName(), user);
-                                localUsers.putAll(toAddUsers);
-
+                                saveContact2(user);
                             }
                         }
 
                     }
+                }
+
+                private void saveContact2(User user) {
+                    Map<String, User> localUsers = getAppContactList();
+                    Map<String, User> toAddUsers = new HashMap<String, User>();
+                    if (!localUsers.containsKey(user.getMUserName())) {
+                        userDao.saveAppContact(user);
+                    }
+                    toAddUsers.put(user.getMUserName(), user);
+                    localUsers.putAll(toAddUsers);
                 }
 
                 @Override
@@ -843,6 +847,7 @@ public class SuperWeChatHelper {
                     Result<User> result = ResultUtils.getResultFromJson(s, User.class);
                     if(result!=null&&result.isRetMsg()){
                         user=  result.getRetData();
+
                         if(user!=null){
                             msg.setNickname(user.getMUserNick());
                             msg.setAvatar(user.getAvatar());

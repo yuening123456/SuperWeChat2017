@@ -2,6 +2,7 @@ package cn.ucai.superwechatui.data.net;
 
 
 import android.content.Context;
+import android.view.GestureDetector;
 
 import java.io.File;
 
@@ -22,5 +23,6 @@ public interface IUserModel {
     void updateUserNick(Context context , String username, String newnick, OnCompleteListener<String> listener);
     void updateAvatar(Context context, String name, String avatarType, File file,OnCompleteListener<String> listener);
     void addConact(Context context,String name,String contactname, OnCompleteListener<String> listener);
+    void deleteContact(Context context, String name, String contactname, OnCompleteListener<String> listener);
 
 }
