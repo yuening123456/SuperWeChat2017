@@ -769,7 +769,7 @@ public class SuperWeChatHelper {
 
         @Override
         public void onContactDeleted(String username) {
-            Map<String, EaseUser> localUsers = SuperWeChatHelper.getInstance().getContactList();
+            Map<String, User> localUsers = SuperWeChatHelper.getInstance().getAppContactList();
             localUsers.remove(username);
             userDao.deleteContact(username);
             inviteMessgeDao.deleteMessage(username);
