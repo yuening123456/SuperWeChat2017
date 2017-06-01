@@ -86,6 +86,15 @@ public class UserModel implements IUserModel {
     }
 
     @Override
+    public void downloadContactAllList(Context context, String name, OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils =new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_DOWNLOAD_CONTACT_ALL_LIST)
+                .addParam(I.Contact.USER_NAME,name)
+                .targetClass(String.class)
+                .execute(listener);
+    }
+
+    @Override
     public void unRegister(Context context, String username, OnCompleteListener listener) {
         OkHttpUtils<String > utils =new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_REGISTER)
