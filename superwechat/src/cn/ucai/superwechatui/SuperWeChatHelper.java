@@ -742,6 +742,7 @@ public class SuperWeChatHelper {
                 @Override
                 public void onSuccess(String s) {
                     if(s!=null){
+                        L.i(TAG,"onContactAdded,s="+s.toString());
                         Result<User> result = ResultUtils.getResultFromJson(s, User.class);
                         if(result!=null&&result.isRetMsg()){
                             User user = result.getRetData();
