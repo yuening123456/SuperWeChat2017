@@ -37,6 +37,7 @@ import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import cn.ucai.superwechatui.domain.EmojiconExampleGroupData;
+import cn.ucai.superwechatui.utils.MFGT;
 import cn.ucai.superwechatui.widget.ChatRowVoiceCall;
 import cn.ucai.easeui.EaseConstant;
 import cn.ucai.easeui.ui.EaseChatFragment;
@@ -253,9 +254,10 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
     @Override
     public void onAvatarClick(String username) {
         //handling when user click avatar
-        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+        /*Intent intent = new Intent(getActivity(), UserProfileActivity.class);
         intent.putExtra("username", username);
-        startActivity(intent);
+        startActivity(intent);*/
+        MFGT.gotoProfiles(getActivity(),username);
     }
     
     @Override
