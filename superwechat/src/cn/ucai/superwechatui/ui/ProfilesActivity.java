@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hyphenate.chat.EMClient;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -63,6 +65,9 @@ public class ProfilesActivity extends BaseActivity {
         if (user == null) {
             user = (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
         }
+        if(user==null&&username.equals(EMClient.getInstance().getCurrentUser())){
+            user=SuperWeChatHelper.getInstance().getUserProfileManager().getCurrentAppUserInfo();
+        }
         if (user != null) {
             showInfo();
         } else {
@@ -78,9 +83,11 @@ public class ProfilesActivity extends BaseActivity {
     }
 
     private void showButton(boolean isContact) {
-        btnAddContact.setVisibility(isContact ? View.GONE : View.VISIBLE);
-        btnSendMsg.setVisibility(isContact ? View.VISIBLE : View.GONE);
-        btnSendVideo.setVisibility(isContact ? View.VISIBLE : View.GONE);
+        if(!user.getMUserName().equals(EMClient.getInstance().getCurrentUser())) {
+            btnAddContact.setVisibility(isContact ? View.GONE : View.VISIBLE);
+            btnSendMsg.setVisibility(isContact ? View.VISIBLE : View.GONE);
+            btnSendVideo.setVisibility(isContact ? View.VISIBLE : View.GONE);
+        }
     }
 
     @OnClick(R.id.btn_add_contact)
@@ -93,6 +100,8 @@ public class ProfilesActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_send_msg:
                 MFGT.gotoChat(ProfilesActivity.this,user.getMUserName());
+                finish();
+
                 break;
             case R.id.btn_send_video:
                 MFGT.gotoVideo(ProfilesActivity.this,user.getMUserName(),false);
