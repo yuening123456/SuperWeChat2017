@@ -125,6 +125,8 @@ public class MainActivity extends BaseActivity {
         setListener();
     }
 
+
+
     private void setListener() {
         mLayoutViewpage.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -159,6 +161,7 @@ public class MainActivity extends BaseActivity {
         });
 
     }
+
 
     private void initFragment() {
         conversationListFragment = new ConversationListFragment();
@@ -512,6 +515,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
+        btnConversion.setSelected(true);
+        layoutTabhost.setChecked(0);
         super.onResume();
 
         if (!isConflict && !isCurrentAccountRemoved) {
@@ -525,6 +530,7 @@ public class MainActivity extends BaseActivity {
         sdkHelper.pushActivity(this);
 
         EMClient.getInstance().chatManager().addMessageListener(messageListener);
+
     }
 
     @Override
