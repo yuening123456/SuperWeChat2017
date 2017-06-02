@@ -65,6 +65,9 @@ public class MFGT  {
     public static void gotoProfiles(Activity activity,User user) {
         startActivity(activity,new Intent(activity,ProfilesActivity.class).putExtra(I.User.TABLE_NAME,user));
     }
+    public static void gotoProfiles(Activity activity,String  username) {
+        startActivity(activity,new Intent(activity,ProfilesActivity.class).putExtra(I.User.USER_NAME,username));
+    }
 
     public static void gotoSendMsg(ProfilesActivity activity, String username) {
         startActivity(activity,new Intent(activity,SendAddContactActivity.class)

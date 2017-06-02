@@ -30,6 +30,7 @@ import cn.ucai.superwechatui.data.net.UserModel;
 import cn.ucai.superwechatui.db.InviteMessgeDao;
 import cn.ucai.superwechatui.db.UserDao;
 import cn.ucai.superwechatui.utils.L;
+import cn.ucai.superwechatui.utils.MFGT;
 import cn.ucai.superwechatui.utils.ResultUtils;
 import cn.ucai.superwechatui.widget.ContactItemView;
 import cn.ucai.easeui.domain.EaseUser;
@@ -133,8 +134,9 @@ public class ContactListFragment extends EaseContactListFragment {
                 L.e("main","OnItemClick,user="+user.toString());
                 if (user != null) {
                     String username = user.getMUserName();
+                    MFGT.gotoProfiles(getActivity(),username);
                     // demo中直接进入聊天页面，实际一般是进入用户详情页
-                    startActivity(new Intent(getActivity(), ChatActivity.class).putExtra("userId", username));
+                   // startActivity(new Intent(getActivity(), ChatActivity.class).putExtra("userId", username));
                 }
             }
         });
