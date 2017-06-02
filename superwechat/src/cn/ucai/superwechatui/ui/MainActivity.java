@@ -66,7 +66,9 @@ import cn.ucai.superwechatui.runtimepermissions.PermissionsManager;
 import cn.ucai.superwechatui.runtimepermissions.PermissionsResultAction;
 import cn.ucai.superwechatui.widget.DMTabButton;
 import cn.ucai.superwechatui.widget.DMTabHost;
+
 import cn.ucai.superwechatui.widget.MFViewPager;
+
 
 @SuppressLint("NewApi")
 public class MainActivity extends BaseActivity {
@@ -515,8 +517,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        btnConversion.setSelected(true);
-        layoutTabhost.setChecked(0);
+
         super.onResume();
 
         if (!isConflict && !isCurrentAccountRemoved) {
@@ -631,6 +632,11 @@ public class MainActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         showExceptionDialogFromIntent(intent);
+        boolean isChat = intent.getBooleanExtra(cn.ucai.superwechatui.widget.I.RESULT_IS_CHAT,false);
+        if(isChat){
+            btnConversion.setSelected(true);
+            mLayoutViewpage.setCurrentItem(0);
+        }
     }
 
     /**

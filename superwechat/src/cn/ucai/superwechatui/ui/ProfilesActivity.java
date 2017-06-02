@@ -100,8 +100,6 @@ public class ProfilesActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_send_msg:
                 MFGT.gotoChat(ProfilesActivity.this,user.getMUserName());
-                finish();
-
                 break;
             case R.id.btn_send_video:
                 MFGT.gotoVideo(ProfilesActivity.this,user.getMUserName(),false);

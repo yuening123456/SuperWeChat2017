@@ -3,6 +3,7 @@ package cn.ucai.superwechatui.widget;
 public interface I {
 	String BROADCAST_UPDATE_AVATAR = "cn.ucai.superwechat_broadcast_update_avatar";
 	String RESULT_UPDATE_AVATAR = "cn.ucai.superwechat_broadcast_update_avatar_result";
+	String RESULT_IS_CHAT="result_is_chat";
 	public static interface User {
 		String TABLE_NAME							=		"t_superwechat_user";
 		String USER_NAME 							= 		"m_user_name";					//用户账号

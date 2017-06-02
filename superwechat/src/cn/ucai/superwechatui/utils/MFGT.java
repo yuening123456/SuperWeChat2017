@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 
 import cn.ucai.easeui.domain.User;
+import cn.ucai.superwechatui.Manifest;
 import cn.ucai.superwechatui.R;
 import cn.ucai.superwechatui.ui.AddContactActivity;
+import cn.ucai.superwechatui.ui.ChatActivity;
 import cn.ucai.superwechatui.ui.GuideActivity;
 import cn.ucai.superwechatui.ui.LoginActivity;
 import cn.ucai.superwechatui.ui.MainActivity;
@@ -18,6 +20,7 @@ import cn.ucai.superwechatui.ui.SendAddContactActivity;
 import cn.ucai.superwechatui.ui.SettingsActivity;
 import cn.ucai.superwechatui.ui.SplashActivity;
 import cn.ucai.superwechatui.ui.UserProfileActivity;
+import cn.ucai.superwechatui.ui.VideoCallActivity;
 import cn.ucai.superwechatui.widget.I;
 
 /**
@@ -43,6 +46,9 @@ public class MFGT  {
 
     public static void gotoMain(Activity activity) {
         startActivity(activity, MainActivity.class);
+    }
+    public static void gotoMain(Activity activity,boolean isChat) {
+        startActivity(activity,new Intent(activity, MainActivity.class).putExtra(I.RESULT_IS_CHAT,isChat));
     }
 
     public static void gotoLogin(Activity activity) {
@@ -72,5 +78,15 @@ public class MFGT  {
     public static void gotoSendMsg(ProfilesActivity activity, String username) {
         startActivity(activity,new Intent(activity,SendAddContactActivity.class)
         .putExtra(I.User.USER_NAME,username));
+    }
+
+    public static void gotoChat(ProfilesActivity activity, String username) {
+        startActivity(activity,new Intent(activity,ChatActivity.class)
+                .putExtra("userId",username));
+    }
+
+    public static void gotoVideo(ProfilesActivity activity, String username, boolean b) {
+        startActivity(activity,new Intent(activity, VideoCallActivity.class).putExtra("username",username)
+                .putExtra("isComingCall", b));
     }
 }
