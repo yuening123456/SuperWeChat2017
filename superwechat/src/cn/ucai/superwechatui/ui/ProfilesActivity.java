@@ -1,5 +1,6 @@
 package cn.ucai.superwechatui.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,8 @@ import cn.ucai.superwechatui.R;
 import cn.ucai.superwechatui.SuperWeChatHelper;
 import cn.ucai.superwechatui.utils.MFGT;
 import cn.ucai.superwechatui.widget.I;
+
+import static cn.ucai.superwechatui.R.id.username;
 
 /**
  * Created by Administrator on 2017/5/25 0025.
@@ -54,15 +57,15 @@ public class ProfilesActivity extends BaseActivity {
 
     private void initData() {
         String username = getIntent().getStringExtra(I.User.USER_NAME);
-        if(username!=null){
-            user=SuperWeChatHelper.getInstance().getAppContactList().get(username);
+        if (username != null) {
+            user = SuperWeChatHelper.getInstance().getAppContactList().get(username);
         }
-        if(user==null){
-            user= (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
+        if (user == null) {
+            user = (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
         }
-        if(user!=null){
+        if (user != null) {
             showInfo();
-        }else{
+        } else {
             finish();
         }
     }
@@ -81,7 +84,21 @@ public class ProfilesActivity extends BaseActivity {
     }
 
     @OnClick(R.id.btn_add_contact)
-    public void sendMsg() {
-        MFGT.gotoSendMsg(ProfilesActivity.this,user.getMUserName());
+    public void sendAddContactMsg() {
+        MFGT.gotoSendMsg(ProfilesActivity.this, user.getMUserName());
+    }
+
+    @OnClick({R.id.btn_send_msg, R.id.btn_send_video})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_send_msg:
+                MFGT.gotoChat(ProfilesActivity.this,user.getMUserName());
+                break;
+            case R.id.btn_send_video:
+                MFGT.gotoVideo(ProfilesActivity.this,user.getMUserName(),false);
+                startActivity(new Intent(ProfilesActivity.this, VideoCallActivity.class).putExtra("username", user.getMUserName())
+                        .putExtra("isComingCall", false));
+                break;
+        }
     }
 }
