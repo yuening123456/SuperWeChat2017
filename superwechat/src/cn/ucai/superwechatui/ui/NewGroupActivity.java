@@ -43,8 +43,10 @@ public class NewGroupActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setContentView(R.layout.em_activity_new_group);
+		super.onCreate(savedInstanceState);
+		showLeftBack();
+		createGroup();
 		groupNameEditText = (EditText) findViewById(R.id.edit_group_name);
 		introductionEditText = (EditText) findViewById(R.id.edit_group_introduction);
 		publibCheckBox = (CheckBox) findViewById(R.id.cb_public);
@@ -64,10 +66,16 @@ public class NewGroupActivity extends BaseActivity {
 		});
 	}
 
-	/**
-	 * @param v
-	 */
-	public void save(View v) {
+	private void createGroup() {
+		titleBar.getRightLayout().setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				save();
+			}
+		});
+	}
+
+	public void save() {
 		String name = groupNameEditText.getText().toString();
 		if (TextUtils.isEmpty(name)) {
 		    new EaseAlertDialog(this, R.string.Group_name_cannot_be_empty).show();
@@ -130,7 +138,5 @@ public class NewGroupActivity extends BaseActivity {
 		}
 	}
 
-	public void back(View view) {
-		finish();
-	}
+
 }

@@ -69,9 +69,9 @@ public class GroupsActivity extends BaseActivity {
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setContentView(R.layout.em_fragment_groups);
-
+		super.onCreate(savedInstanceState);
+		showLeftBack();
 		instance = this;
 		inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		grouplist = EMClient.getInstance().groupManager().getAllGroups();
@@ -79,7 +79,6 @@ public class GroupsActivity extends BaseActivity {
 		//show group list
         groupAdapter = new GroupAdapter(this, 1, grouplist);
         groupListView.setAdapter(groupAdapter);
-		
 		swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
 		swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,
 		                R.color.holo_orange_light, R.color.holo_red_light);
@@ -163,7 +162,4 @@ public class GroupsActivity extends BaseActivity {
 		instance = null;
 	}
 
-	public void back(View view) {
-		finish();
-	}
 }
