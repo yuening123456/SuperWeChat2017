@@ -25,4 +25,6 @@ public interface IUserModel {
     void addConact(Context context,String name,String contactname, OnCompleteListener<String> listener);
     void deleteContact(Context context, String name, String contactname, OnCompleteListener<String> listener);
     void downloadContactAllList(Context context ,String name, OnCompleteListener<String> listener);
+    void createGroup(Context context,String hxid,String name,String des,String owner,
+                     boolean isPublic,boolean isInvites,File file, OnCompleteListener<String> listener);
 }

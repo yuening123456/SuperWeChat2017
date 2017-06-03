@@ -103,8 +103,8 @@ public class ProfilesActivity extends BaseActivity {
                 break;
             case R.id.btn_send_video:
                 MFGT.gotoVideo(ProfilesActivity.this,user.getMUserName(),false);
-                startActivity(new Intent(ProfilesActivity.this, VideoCallActivity.class).putExtra("username", user.getMUserName())
-                        .putExtra("isComingCall", false));
+               /* startActivity(new Intent(ProfilesActivity.this, VideoCallActivity.class).putExtra("username", user.getMUserName())
+                        .putExtra("isComingCall", false));*/
                 break;
         }
     }

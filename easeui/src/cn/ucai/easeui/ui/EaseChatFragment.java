@@ -112,7 +112,9 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.ease_fragment_chat, container, false);
+
     }
 
     @Override
@@ -125,6 +127,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         toChatUsername = fragmentArgs.getString(EaseConstant.EXTRA_USER_ID);
 
         super.onActivityCreated(savedInstanceState);
+
     }
 
     /**
