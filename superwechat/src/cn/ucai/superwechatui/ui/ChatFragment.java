@@ -22,9 +22,14 @@ import com.easemob.redpacketsdk.RPSendPacketCallback;
 import com.easemob.redpacketsdk.bean.RedPacketInfo;
 import com.easemob.redpacketsdk.constant.RPConstant;
 
+import cn.ucai.easeui.domain.User;
 import cn.ucai.superwechatui.Constant;
 import cn.ucai.superwechatui.R;
 import cn.ucai.superwechatui.SuperWeChatHelper;
+import cn.ucai.superwechatui.data.OnCompleteListener;
+import cn.ucai.superwechatui.data.Result;
+import cn.ucai.superwechatui.data.net.IUserModel;
+import cn.ucai.superwechatui.data.net.UserModel;
 import cn.ucai.superwechatui.domain.RobotUser;
 import cn.ucai.redpacket.utils.RedPacketUtil;
 import cn.ucai.redpacket.widget.ChatRowRandomPacket;
@@ -38,6 +43,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import cn.ucai.superwechatui.domain.EmojiconExampleGroupData;
 import cn.ucai.superwechatui.utils.MFGT;
+import cn.ucai.superwechatui.utils.ResultUtils;
 import cn.ucai.superwechatui.widget.ChatRowVoiceCall;
 import cn.ucai.easeui.EaseConstant;
 import cn.ucai.easeui.ui.EaseChatFragment;
@@ -87,7 +93,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
      * if it is chatBot 
      */
     private boolean isRobot;
-    
+    IUserModel model;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -96,6 +102,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 
     @Override
     protected void setUpView() {
+        model=new UserModel();
         setChatFragmentListener(this);
         if (chatType == Constant.CHATTYPE_SINGLE) {
             Map<String,RobotUser> robotMap = SuperWeChatHelper.getInstance().getRobotList();
@@ -259,7 +266,28 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         /*Intent intent = new Intent(getActivity(), UserProfileActivity.class);
         intent.putExtra("username", username);
         startActivity(intent);*/
-        MFGT.gotoProfiles(getActivity(),username);
+        model.loadUserInfo(getActivity(), username, new OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                boolean isSuccess=false;
+                User user=null;
+                if(s!=null){
+                    Result<User> result= ResultUtils.getResultFromJson(s,User.class);
+                    if(result!=null&&result.isRetMsg()){
+                        user=result.getRetData();
+                        if(user!=null){
+                            isSuccess=true;
+                        }
+                    }
+                    MFGT.gotoProfiles(getActivity(),user);
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+            }
+        });
+       // MFGT.gotoProfiles(getActivity(),username);
     }
     
     @Override
