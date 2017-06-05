@@ -26,10 +26,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import com.hyphenate.chat.EMGroup;
 
 import java.util.List;
 
+import cn.ucai.easeui.domain.Group;
 import cn.ucai.superwechatui.R;
 
 public class GroupAdapter extends ArrayAdapter<EMGroup> {
@@ -112,7 +114,7 @@ public class GroupAdapter extends ArrayAdapter<EMGroup> {
 				convertView = inflater.inflate(R.layout.em_row_group, parent, false);
 			}
 			((TextView) convertView.findViewById(R.id.name)).setText(getItem(position - 3).getGroupName());
-
+			//((ImageView) convertView.findViewById(R.id.avatar)).setImageResource(Integer.parseInt(getItem(position-3).getAvatar()));
 		}
 
 		return convertView;

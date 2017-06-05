@@ -104,10 +104,21 @@ public class UserModel implements IUserModel {
                 .addParam(I.Group.OWNER,owner)
                 .addParam(I.Group.IS_PUBLIC,String.valueOf(isPublic))
                 .addParam(I.Group.ALLOW_INVITES,String.valueOf(isInvites))
+                .addFile2(file)
                 .targetClass(String.class)
                 .post()
                 .execute(listener);
     }
+
+    @Override
+    public void findAllGroup(Context context, String name, OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils =new OkHttpUtils<>(context);
+        utils.setRequestUrl("findAllGroupByUserName")
+                .addParam("m_user_name",name)
+                .targetClass(String.class)
+                .execute(listener);
+    }
+
 
     @Override
     public void unRegister(Context context, String username, OnCompleteListener listener) {

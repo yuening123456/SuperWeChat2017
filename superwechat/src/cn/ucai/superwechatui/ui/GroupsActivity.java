@@ -31,25 +31,37 @@ import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
+
+import cn.ucai.easeui.domain.Group;
 import cn.ucai.superwechatui.Constant;
 import cn.ucai.superwechatui.R;
+import cn.ucai.superwechatui.SuperWeChatHelper;
 import cn.ucai.superwechatui.adapter.GroupAdapter;
+import cn.ucai.superwechatui.data.OnCompleteListener;
+import cn.ucai.superwechatui.data.Result;
+import cn.ucai.superwechatui.data.net.IUserModel;
+import cn.ucai.superwechatui.data.net.UserModel;
+import cn.ucai.superwechatui.utils.L;
+import cn.ucai.superwechatui.utils.ResultUtils;
+import cn.ucai.superwechatui.widget.I;
+
 import com.hyphenate.exceptions.HyphenateException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupsActivity extends BaseActivity {
 	public static final String TAG = "GroupsActivity";
 	private ListView groupListView;
 	protected List<EMGroup> grouplist;
+    //protected List<Group> grouplist;
 	private GroupAdapter groupAdapter;
 	private InputMethodManager inputMethodManager;
 	public static GroupsActivity instance;
 	private View progressBar;
 	private SwipeRefreshLayout swipeRefreshLayout;
-	
-	
-	Handler handler = new Handler(){
+	IUserModel model;
+    Handler handler = new Handler(){
 	    public void handleMessage(android.os.Message msg) {
 	        swipeRefreshLayout.setRefreshing(false);
 	        switch (msg.what) {
@@ -82,7 +94,7 @@ public class GroupsActivity extends BaseActivity {
 		swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
 		swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,
 		                R.color.holo_orange_light, R.color.holo_red_light);
-		//pull down to refresh
+
 		swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override
@@ -138,7 +150,33 @@ public class GroupsActivity extends BaseActivity {
 		
 	}
 
-	@Override
+    /*private List<Group> getGroup() {
+        L.i("main","username="+SuperWeChatHelper.getInstance().getCurrentUsernName());
+        model.findAllGroup(GroupsActivity.this, SuperWeChatHelper.getInstance().getCurrentUsernName(), new OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                L.i("main","s="+s);
+                if(s!=null){
+                    Result<List<Group>> result = ResultUtils.getListResultFromJson(s, Group.class);
+                    L.i("main","GetGroup RESULT="+result);
+                    if(result!=null){
+                        grouplist= result.getRetData();
+                        L.i("main","GetGroup result.getRetdata="+result.getRetData());
+                    }
+                }
+            }
+            @Override
+            public void onError(String error) {
+				L.i("main","onError RESULT="+error);
+            }
+        });
+
+        L.i("main","GetGroup groupList="+grouplist);
+        return grouplist;
+    }*/
+
+
+    @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -150,7 +188,7 @@ public class GroupsActivity extends BaseActivity {
 	}
 	
 	private void refresh(){
-	    grouplist = EMClient.getInstance().groupManager().getAllGroups();
+	   	grouplist = EMClient.getInstance().groupManager().getAllGroups();
         groupAdapter = new GroupAdapter(this, 1, grouplist);
         groupListView.setAdapter(groupAdapter);
         groupAdapter.notifyDataSetChanged();

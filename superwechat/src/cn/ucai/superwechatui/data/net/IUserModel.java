@@ -27,4 +27,5 @@ public interface IUserModel {
     void downloadContactAllList(Context context ,String name, OnCompleteListener<String> listener);
     void createGroup(Context context,String hxid,String name,String des,String owner,
                      boolean isPublic,boolean isInvites,File file, OnCompleteListener<String> listener);
+    void findAllGroup(Context context,String name,OnCompleteListener<String> listener);
 }
