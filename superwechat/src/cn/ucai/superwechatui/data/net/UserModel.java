@@ -119,6 +119,27 @@ public class UserModel implements IUserModel {
                 .execute(listener);
     }
 
+    @Override
+    public void addGroupMembers(Context context, String usernames, String hxid, OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils =new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBERS)
+                .addParam(I.Member.GROUP_HX_ID,hxid)
+                .addParam(I.Member.USER_NAME,usernames)
+                .targetClass(String.class)
+                .execute(listener);
+    }
+
+ /*   @Override
+    public void downLoadAvatar(Context context, String hxid, String avatarType, String avatarSuffix, OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils =new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_DOWNLOAD_AVATAR)
+                .addParam(I.Group.HX_ID,hxid)
+                .addParam(I.AVATAR_TYPE,avatarType)
+                .addParam("m_avatar_suffix",avatarSuffix)
+                .targetClass(String.class)
+                .execute(listener);
+    }*/
+
 
     @Override
     public void unRegister(Context context, String username, OnCompleteListener listener) {

@@ -58,9 +58,7 @@ public class GroupsActivity extends BaseActivity {
 	private GroupAdapter groupAdapter;
 	private InputMethodManager inputMethodManager;
 	public static GroupsActivity instance;
-	private View progressBar;
 	private SwipeRefreshLayout swipeRefreshLayout;
-	IUserModel model;
     Handler handler = new Handler(){
 	    public void handleMessage(android.os.Message msg) {
 	        swipeRefreshLayout.setRefreshing(false);
@@ -149,32 +147,6 @@ public class GroupsActivity extends BaseActivity {
 		});
 		
 	}
-
-    /*private List<Group> getGroup() {
-        L.i("main","username="+SuperWeChatHelper.getInstance().getCurrentUsernName());
-        model.findAllGroup(GroupsActivity.this, SuperWeChatHelper.getInstance().getCurrentUsernName(), new OnCompleteListener<String>() {
-            @Override
-            public void onSuccess(String s) {
-                L.i("main","s="+s);
-                if(s!=null){
-                    Result<List<Group>> result = ResultUtils.getListResultFromJson(s, Group.class);
-                    L.i("main","GetGroup RESULT="+result);
-                    if(result!=null){
-                        grouplist= result.getRetData();
-                        L.i("main","GetGroup result.getRetdata="+result.getRetData());
-                    }
-                }
-            }
-            @Override
-            public void onError(String error) {
-				L.i("main","onError RESULT="+error);
-            }
-        });
-
-        L.i("main","GetGroup groupList="+grouplist);
-        return grouplist;
-    }*/
-
 
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

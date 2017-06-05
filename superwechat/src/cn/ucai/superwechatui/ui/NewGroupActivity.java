@@ -50,7 +50,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.ucai.easeui.domain.Group;
-import cn.ucai.easeui.utils.EaseUserUtils;
 import cn.ucai.easeui.widget.EaseAlertDialog;
 import cn.ucai.superwechatui.R;
 import cn.ucai.superwechatui.data.OnCompleteListener;
@@ -123,34 +122,34 @@ public class NewGroupActivity extends BaseActivity {
             new EaseAlertDialog(this, R.string.Group_name_cannot_be_empty).show();
         } else {
             // select from contact list
-            startActivityForResult(new Intent(this, GroupPickContactsActivity.class).putExtra("groupName", name),RESULT_CODE_CODE);
+            startActivityForResult(new Intent(this, GroupPickContactsActivity.class).putExtra("groupName", name), RESULT_CODE_CODE);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
-       // super.onActivityResult(requestCode, resultCode, data);
+        // super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
-           return;
+            return;
         }
         switch (requestCode) {
-                case REQUESTCODE_PICK:
-                    if (data == null || data.getData() == null) {
-                        return;
-                    }
-                    startPhotoZoom(data.getData());
-                    break;
-                case REQUESTCODE_CUTTING:
-                    if (data != null) {
-                        setPicToView(data);
-                    }
-                    break;
+            case REQUESTCODE_PICK:
+                if (data == null || data.getData() == null) {
+                    return;
+                }
+                startPhotoZoom(data.getData());
+                break;
+            case REQUESTCODE_CUTTING:
+                if (data != null) {
+                    setPicToView(data);
+                }
+                break;
             case RESULT_CODE_CODE:
                 getw(data);
                 break;
-                default:
-                    break;
-            }
+            default:
+                break;
+        }
 
     }
 
@@ -177,7 +176,7 @@ public class NewGroupActivity extends BaseActivity {
                         option.style = memberCheckbox.isChecked() ? EMGroupStyle.EMGroupStylePrivateMemberCanInvite : EMGroupStyle.EMGroupStylePrivateOnlyOwnerInvite;
                     }
                     EMGroup group = EMClient.getInstance().groupManager().createGroup(groupName, desc, members, reason, option);
-                    createAppGroup(group);
+                    createAppGroup(group, members);
                     createSuccess();
                 } catch (final HyphenateException e) {
                     createFiles(e);
@@ -215,7 +214,6 @@ public class NewGroupActivity extends BaseActivity {
             L.i("main", "setPicToView=" + photo);
 //            Drawable drawable = new BitmapDrawable(getResources(), photo);
 //            mIvUserinfoAvatar.setImageDrawable(drawable);
-//            uploadUserAvatar(Bitmap2Bytes(photo));
             file = saveBitmapFile(photo);
             L.i("main", "setPicToView=file" + file);
             ivGroupAvatar.setImageBitmap(photo);
@@ -277,7 +275,7 @@ public class NewGroupActivity extends BaseActivity {
         });
     }
 
-    private void createAppGroup(final EMGroup group) {
+    private void createAppGroup(final EMGroup group, final String[] members) {
         model.createGroup(NewGroupActivity.this, group.getGroupId(), group.getGroupName(),
                 group.getDescription(), group.getOwner(), group.isPublic(), group.isMemberAllowToInvite(),
                 file, new OnCompleteListener<String>() {
@@ -288,11 +286,17 @@ public class NewGroupActivity extends BaseActivity {
                             Result<Group> result = ResultUtils.getResultFromJson(s, Group.class);
                             if (result != null && result.isRetMsg()) {
                                 isSuccess = true;
-                                createSuccess();
+                                // createSuccess();
                             }
                         }
                         if (!isSuccess) {
                             createFiles(null);
+                        } else {
+                            if (members.length > 0 && members != null) {
+                                addGroupMember(members, group.getGroupId());
+                            } else {
+                                createSuccess();
+                            }
                         }
                     }
 
@@ -302,6 +306,36 @@ public class NewGroupActivity extends BaseActivity {
 
                     }
                 });
+    }
+
+    private void addGroupMember(String[] members, String groupId) {
+        StringBuilder sb = new StringBuilder();
+        for (String member : members) {
+            sb.append(member);
+            sb.append(",");
+        }
+        model.addGroupMembers(NewGroupActivity.this, sb.toString(), groupId, new OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                L.i("main","s="+s);
+                boolean isSuccess = false;
+                if (s != null) {
+                    Result<Group> result = ResultUtils.getResultFromJson(s, Group.class);
+                    if (result != null && result.isRetMsg()) {
+                        isSuccess = true;
+                        createSuccess();
+                    }
+                }
+                if (!isSuccess) {
+                    createFiles(null);
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                createFiles(null);
+            }
+        });
     }
 
     @OnClick(R.id.layout_group_avatar)

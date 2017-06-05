@@ -168,9 +168,38 @@ public class UserProfileManager {
 		}
 		return avatarUrl;
 	}
+	public void uploadAppUserAvatar(File file){
+		model.updateAvatar(appContext, EMClient.getInstance().getCurrentUser(), I.AVATAR_TYPE_USER_PATH,
+				file, new OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						boolean isSuccess=false;
+						if(s!=null){
+							Log.i("main","uploadUserAppAvatar s"+s.toString());
+							Result<User> result = ResultUtils.getResultFromJson(s, User.class);
+							if(result!=null){
+								Log.i("main","uploadUserAppAvatar result"+result);
+								if(result.isRetMsg()){
+									User user=result.getRetData();
+									if(user!=null){
+										isSuccess=true;
+										setCurrentAppUserAvatar(user.getAvatar());
+									}
+								}
 
-	public void uploadAppUserAvatar(File file) {
+							}
 
+						}
+						appContext.sendBroadcast(new Intent(I.BROADCAST_UPDATE_AVATAR)
+								.putExtra(I.RESULT_UPDATE_AVATAR,isSuccess));
+
+					}
+
+					@Override
+					public void onError(String error) {
+						appContext.sendBroadcast(new Intent(I.BROADCAST_UPDATE_AVATAR).putExtra(I.RESULT_UPDATE_AVATAR,false));
+					}
+				});
 	}
 
 	public void asyncGetCurrentUserInfo() {
@@ -178,10 +207,10 @@ public class UserProfileManager {
 
 			@Override
 			public void onSuccess(EaseUser value) {
-			    if(value != null){
-    				setCurrentUserNick(value.getNick());
-    				setCurrentUserAvatar(value.getAvatar());
-			    }
+				if(value != null){
+					setCurrentUserNick(value.getNick());
+					setCurrentUserAvatar(value.getAvatar());
+				}
 			}
 
 			@Override
@@ -249,6 +278,4 @@ public class UserProfileManager {
 		PreferenceManager.getInstance().setCurrentUserNick(nickname);
 
 	}
-
-
 }
