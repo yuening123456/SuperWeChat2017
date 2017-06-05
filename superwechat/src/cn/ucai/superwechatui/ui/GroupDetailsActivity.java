@@ -38,6 +38,8 @@ import com.hyphenate.chat.EMConversation.EMConversationType;
 import com.hyphenate.chat.EMCursorResult;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMPushConfigs;
+
+import cn.ucai.easeui.domain.User;
 import cn.ucai.easeui.ui.EaseGroupListener;
 import cn.ucai.easeui.utils.EaseUserUtils;
 import cn.ucai.easeui.widget.EaseAlertDialog;
@@ -45,6 +47,13 @@ import cn.ucai.easeui.widget.EaseAlertDialog.AlertDialogUser;
 import cn.ucai.easeui.widget.EaseExpandGridView;
 import cn.ucai.easeui.widget.EaseSwitchButton;
 import cn.ucai.superwechatui.R;
+import cn.ucai.superwechatui.data.OnCompleteListener;
+import cn.ucai.superwechatui.data.Result;
+import cn.ucai.superwechatui.data.net.IUserModel;
+import cn.ucai.superwechatui.data.net.UserModel;
+import cn.ucai.superwechatui.utils.CommonUtils;
+import cn.ucai.superwechatui.utils.MFGT;
+import cn.ucai.superwechatui.utils.ResultUtils;
 import cn.ucai.superwechatui.widget.I;
 
 import com.hyphenate.exceptions.HyphenateException;
@@ -89,13 +98,13 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	private List<String> blackList = Collections.synchronizedList(new ArrayList<String>());
 
 	GroupChangeListener groupChangeListener;
-
+	IUserModel model;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	    
         groupId = getIntent().getStringExtra("groupId");
         group = EMClient.getInstance().groupManager().getGroup(groupId);
-
+		model=new UserModel();
         // we are not supposed to show the group if we don't find the group
         if(group == null){
             finish();
@@ -830,7 +839,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			holder.imageView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					startActivity(new Intent(getContext(),ProfilesActivity.class).putExtra(I.User.USER_NAME,username));
+					getUser(username);
+					//startActivity(new Intent(getContext(),ProfilesActivity.class).putExtra(I.User.USER_NAME,username));
 				}
 			});
 			LinearLayout id_background = (LinearLayout) convertView.findViewById(R.id.l_bg_id);
@@ -873,6 +883,30 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		public int getCount() {
 			return super.getCount();
 		}
+	}
+
+	private void getUser(String username) {
+		model.loadUserInfo(GroupDetailsActivity.this, username, new OnCompleteListener<String>() {
+			@Override
+			public void onSuccess(String s) {
+				boolean isSuccess=false;
+				User user=null;
+				if(s!=null){
+					Result<User> result= ResultUtils.getResultFromJson(s,User.class);
+					if(result!=null&&result.isRetMsg()){
+						user=result.getRetData();
+						if(user!=null){
+							isSuccess=true;
+						}
+					}
+					MFGT.gotoProfiles(GroupDetailsActivity.this,user);
+				}
+			}
+
+			@Override
+			public void onError(String error) {
+			}
+		});
 	}
 
 
@@ -934,7 +968,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				holder.imageView.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						startActivity(new Intent(getContext(),ProfilesActivity.class).putExtra(I.User.USER_NAME,username));
+						getUser(username);
 					}
 				});
 

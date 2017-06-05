@@ -18,7 +18,12 @@ import cn.ucai.easeui.utils.EaseUserUtils;
 import cn.ucai.easeui.widget.EaseTitleBar;
 import cn.ucai.superwechatui.R;
 import cn.ucai.superwechatui.SuperWeChatHelper;
+import cn.ucai.superwechatui.data.OnCompleteListener;
+import cn.ucai.superwechatui.data.Result;
+import cn.ucai.superwechatui.data.net.IUserModel;
+import cn.ucai.superwechatui.data.net.UserModel;
 import cn.ucai.superwechatui.utils.MFGT;
+import cn.ucai.superwechatui.utils.ResultUtils;
 import cn.ucai.superwechatui.widget.I;
 
 import static cn.ucai.superwechatui.R.id.username;
@@ -47,12 +52,13 @@ public class ProfilesActivity extends BaseActivity {
     RelativeLayout viewUser;
     @BindView(R.id.txt_note_mark)
     TextView txtNoteMark;
-
+    IUserModel model;
     @Override
     protected void onCreate(Bundle arg0) {
         setContentView(R.layout.activity_profiles);
         super.onCreate(arg0);
         ButterKnife.bind(this);
+        model=new UserModel();
         initData();
         showLeftBack();
     }
@@ -61,9 +67,6 @@ public class ProfilesActivity extends BaseActivity {
         String username = getIntent().getStringExtra(I.User.USER_NAME);
         if (username != null) {
             user = SuperWeChatHelper.getInstance().getAppContactList().get(username);
-            if(user==null){
-                user=EaseUserUtils.getAppUserInfo(username);
-            }
         }
         if (user == null) {
             user = (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
