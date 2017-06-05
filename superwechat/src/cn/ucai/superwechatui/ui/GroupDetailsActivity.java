@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,6 +53,7 @@ import cn.ucai.superwechatui.data.Result;
 import cn.ucai.superwechatui.data.net.IUserModel;
 import cn.ucai.superwechatui.data.net.UserModel;
 import cn.ucai.superwechatui.utils.CommonUtils;
+import cn.ucai.superwechatui.utils.L;
 import cn.ucai.superwechatui.utils.MFGT;
 import cn.ucai.superwechatui.utils.ResultUtils;
 import cn.ucai.superwechatui.widget.I;
@@ -293,8 +295,9 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 								EMClient.getInstance().groupManager().changeGroupName(groupId, returnData);
 								runOnUiThread(new Runnable() {
 									public void run() {
-									titleBar.setTitle(group.getGroupName() + "(" + group.getMemberCount() + ")");
-										progressDialog.dismiss();
+								/*	titleBar.setTitle(group.getGroupName() + "(" + group.getMemberCount() + ")");
+										progressDialog.dismiss();*/
+										updateGroupNameByHxid(groupId,returnData);
 										Toast.makeText(getApplicationContext(), st6, Toast.LENGTH_SHORT).show();
 									}
 								});
@@ -347,6 +350,25 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			}
 		}
 	}
+
+	private void updateGroupNameByHxid(String groupId, String returnData) {
+		Log.i("main","updateGroupNameByHxid:groupId"+groupId);
+		Log.i("main","updateGroupNameByHxid:returnData"+returnData);
+		model.updateGroupNameByHxid(GroupDetailsActivity.this, groupId, returnData, new OnCompleteListener<String>() {
+			@Override
+			public void onSuccess(String s) {
+						titleBar.setTitle(group.getGroupName() + "(" + group.getMemberCount() + ")");
+						progressDialog.dismiss();
+
+			}
+
+			@Override
+			public void onError(String error) {
+
+			}
+		});
+	}
+
 
 	private void refreshOwnerAdminAdapter() {
 		runOnUiThread(new Runnable() {
