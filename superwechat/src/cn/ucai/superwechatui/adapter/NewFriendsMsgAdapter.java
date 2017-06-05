@@ -65,7 +65,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			holder.status = (Button) convertView.findViewById(R.id.user_state);
 			holder.groupContainer = (LinearLayout) convertView.findViewById(R.id.ll_group);
 			holder.groupname = (TextView) convertView.findViewById(R.id.tv_groupName);
-			// holder.time = (TextView) convertView.findViewById(R.id.time);
+			//holder.time = (TextView) convertView.findViewById(R.id.time);
 
 			convertView.setTag(holder);
 		} else {
@@ -92,16 +92,18 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 		    
 			if(msg.getGroupId() != null){ // show group name
 				holder.groupContainer.setVisibility(View.VISIBLE);
-				holder.groupname.setText(msg.getGroupName());
+				holder.groupname.setText(msg.getGroupId());
+				EaseUserUtils.setGroupAvatarByHxid(context,msg.getGroupId(),holder.avator);
+				holder.name.setText(msg.getGroupName());
 			} else{
 				holder.groupContainer.setVisibility(View.GONE);
+				EaseUserUtils.setAvatar(context,msg.getAvatar(),holder.avator);
+				EaseUserUtils.setAppUserNick(msg.getNickname(),holder.name);
 			}
 			
 			holder.reason.setText(msg.getReason());
 			//holder.name.setText(msg.getNickname());
 			Log.i("main",msg.getNickname());
-            EaseUserUtils.setAvatar(context,messgeDao.getMessagesList().get(position).getAvatar(),holder.avator);
-			EaseUserUtils.setAppUserNick(msg.getNickname(),holder.name);
 
 			// holder.time.setText(DateUtils.getTimestampString(new
 			// Date(msg.getTime())));
