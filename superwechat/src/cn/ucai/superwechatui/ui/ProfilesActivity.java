@@ -61,6 +61,9 @@ public class ProfilesActivity extends BaseActivity {
         String username = getIntent().getStringExtra(I.User.USER_NAME);
         if (username != null) {
             user = SuperWeChatHelper.getInstance().getAppContactList().get(username);
+            if(user==null){
+                user=EaseUserUtils.getAppUserInfo(username);
+            }
         }
         if (user == null) {
             user = (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
