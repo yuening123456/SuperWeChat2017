@@ -565,15 +565,14 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						// 一般成员调用invite方法
 						getInstance().groupManager().inviteUser(groupId, newmembers, null);
 					}
-
+					addGroupMember(newmembers,groupId);
 					updateGroup();
 					refreshMembersAdapter();
 					runOnUiThread(new Runnable() {
 						public void run() {
-							addGroupMember(newmembers,groupId);
-							/*titleBar.setTitle(group.getGroupName() + "(" + group.getMemberCount()
+							titleBar.setTitle(group.getGroupName() + "(" + group.getMemberCount()
 									+ st);
-							progressDialog.dismiss();*/
+							progressDialog.dismiss();
 						}
 					});
 				} catch (final Exception e) {
@@ -1272,18 +1271,16 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	    
 	    @Override
 	    public void onMemberJoined(String groupId, String member) {
-	        EMLog.d(TAG, "onMemberJoined");
+
 	        updateGroup();
 	    }
 	    
 	    @Override
 	    public void onMemberExited(String groupId, String member) {
-	        EMLog.d(TAG, "onMemberExited");
             updateGroup();
 	    }
     }
 	private void addGroupMember(String[] members, String groupId) {
-		EMLog.d(TAG, "onMemberExited");
 		StringBuilder sb = new StringBuilder();
 		for (String member : members) {
 			sb.append(member);
@@ -1292,7 +1289,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		model.addGroupMembers(GroupDetailsActivity.this, sb.toString(), groupId, new OnCompleteListener<String>() {
 			@Override
 			public void onSuccess(String s) {
-				L.i("main","s="+s);
 				boolean isSuccess = false;
 				if (s != null) {
 					Result<Group> result = ResultUtils.getResultFromJson(s, Group.class);
