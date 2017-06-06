@@ -357,9 +357,13 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		model.updateGroupNameByHxid(GroupDetailsActivity.this, groupId, returnData, new OnCompleteListener<String>() {
 			@Override
 			public void onSuccess(String s) {
+				if(s!=null) {
+					Result result = ResultUtils.getResultFromJson(s, Result.class);
+					if(result!=null&&result.isRetMsg()){
 						titleBar.setTitle(group.getGroupName() + "(" + group.getMemberCount() + ")");
 						progressDialog.dismiss();
-
+					}
+				}
 			}
 
 			@Override
@@ -907,29 +911,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		}
 	}
 
-	private void getUser(String username) {
-		model.loadUserInfo(GroupDetailsActivity.this, username, new OnCompleteListener<String>() {
-			@Override
-			public void onSuccess(String s) {
-				boolean isSuccess=false;
-				User user=null;
-				if(s!=null){
-					Result<User> result= ResultUtils.getResultFromJson(s,User.class);
-					if(result!=null&&result.isRetMsg()){
-						user=result.getRetData();
-						if(user!=null){
-							isSuccess=true;
-						}
-					}
-					MFGT.gotoProfiles(GroupDetailsActivity.this,user);
-				}
-			}
-
-			@Override
-			public void onError(String error) {
-			}
-		});
-	}
 
 
 	/**
