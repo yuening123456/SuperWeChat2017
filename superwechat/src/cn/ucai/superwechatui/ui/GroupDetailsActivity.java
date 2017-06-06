@@ -862,24 +862,23 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			button.setVisibility(View.VISIBLE);
 			EaseUserUtils.setAppUserNick(username, holder.textView);
 			EaseUserUtils.setAppUserAvatar(getContext(), username, holder.imageView);
-			holder.imageView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					//getUser(username);
-					startActivity(new Intent(getContext(),ProfilesActivity.class).putExtra(I.User.USER_NAME,username));
-				}
-			});
 			LinearLayout id_background = (LinearLayout) convertView.findViewById(R.id.l_bg_id);
 			id_background.setBackgroundColor(convertView.getResources().getColor(
 					position == 0 ? R.color.holo_red_light: R.color.holo_orange_light));
 			button.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					MFGT.gotoProfiles(GroupDetailsActivity.this,username);
+				}
+			});
+			button.setOnLongClickListener(new View.OnLongClickListener() {
+				@Override
+				public boolean onLongClick(View v) {
 					if (!isCurrentOwner(group)) {
-						return;
+						return false;
 					}
 					if (username.equals(group.getOwner())) {
-						return;
+						return false;
 					}
 					operationUserId = username;
 					Dialog dialog = createMemberMenuDialog();
@@ -900,6 +899,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					return false;
 				}
 			});
 			return convertView;
@@ -968,14 +968,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				final String username = getItem(position);
 				EaseUserUtils.setAppUserNick(username, holder.textView);
 				EaseUserUtils.setAppUserAvatar(getContext(), username, holder.imageView);
-				holder.imageView.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						//getUser(username);
-						startActivity(new Intent(getContext(),ProfilesActivity.class).putExtra(I.User.USER_NAME,username));
-					}
-				});
-
 				LinearLayout id_background = (LinearLayout) convertView.findViewById(R.id.l_bg_id);
 				if (isInMuteList(username)) {
 					id_background.setBackgroundColor(convertView.getResources().getColor(R.color.gray_normal));
@@ -984,17 +976,21 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				} else {
 					id_background.setBackgroundColor(convertView.getResources().getColor(R.color.holo_blue_bright));
 				}
-
 				button.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						MFGT.gotoProfiles(GroupDetailsActivity.this,username);
+					}
+				});
+				button.setOnLongClickListener(new View.OnLongClickListener() {
+					@Override
+					public boolean onLongClick(View v) {
 						if (!isCurrentOwner(group) && !isCurrentAdmin(group)) {
-							return;
+							return false;
 						}
 						operationUserId = username;
 						Dialog dialog = createMemberMenuDialog();
 						dialog.show();
-
 						boolean[] normalVisibilities = {
 								false,      //R.id.menu_item_transfer_owner,
 								isCurrentOwner(group) ? true : false,       //R.id.menu_item_add_admin,
@@ -1041,6 +1037,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
+						return false;
 					}
 				});
 			}
