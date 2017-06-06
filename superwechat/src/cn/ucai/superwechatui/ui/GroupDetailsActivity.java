@@ -40,6 +40,7 @@ import com.hyphenate.chat.EMCursorResult;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMPushConfigs;
 
+import cn.ucai.easeui.domain.Group;
 import cn.ucai.easeui.domain.User;
 import cn.ucai.easeui.ui.EaseGroupListener;
 import cn.ucai.easeui.utils.EaseUserUtils;
@@ -48,15 +49,14 @@ import cn.ucai.easeui.widget.EaseAlertDialog.AlertDialogUser;
 import cn.ucai.easeui.widget.EaseExpandGridView;
 import cn.ucai.easeui.widget.EaseSwitchButton;
 import cn.ucai.superwechatui.R;
+import cn.ucai.superwechatui.SuperWeChatHelper;
 import cn.ucai.superwechatui.data.OnCompleteListener;
 import cn.ucai.superwechatui.data.Result;
 import cn.ucai.superwechatui.data.net.IUserModel;
 import cn.ucai.superwechatui.data.net.UserModel;
-import cn.ucai.superwechatui.utils.CommonUtils;
 import cn.ucai.superwechatui.utils.L;
 import cn.ucai.superwechatui.utils.MFGT;
 import cn.ucai.superwechatui.utils.ResultUtils;
-import cn.ucai.superwechatui.widget.I;
 
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
@@ -64,6 +64,8 @@ import com.hyphenate.util.EMLog;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.hyphenate.chat.EMClient.getInstance;
 
 public class GroupDetailsActivity extends BaseActivity implements OnClickListener {
 	private static final String TAG = "GroupDetailsActivity";
@@ -105,7 +107,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	protected void onCreate(Bundle savedInstanceState) {
 	    
         groupId = getIntent().getStringExtra("groupId");
-        group = EMClient.getInstance().groupManager().getGroup(groupId);
+        group = getInstance().groupManager().getGroup(groupId);
 		model=new UserModel();
         // we are not supposed to show the group if we don't find the group
         if(group == null){
@@ -137,23 +139,23 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 		idText.setText(groupId);
 		if (group.getOwner() == null || "".equals(group.getOwner())
-				|| !group.getOwner().equals(EMClient.getInstance().getCurrentUser())) {
+				|| !group.getOwner().equals(getInstance().getCurrentUser())) {
 			exitBtn.setVisibility(View.GONE);
 			deleteBtn.setVisibility(View.GONE);
 			changeGroupNameLayout.setVisibility(View.GONE);
 			changeGroupDescriptionLayout.setVisibility(View.GONE);
 		}
 		// show dismiss button if you are owner of group
-		if (EMClient.getInstance().getCurrentUser().equals(group.getOwner())) {
+		if (getInstance().getCurrentUser().equals(group.getOwner())) {
 			exitBtn.setVisibility(View.GONE);
 			deleteBtn.setVisibility(View.VISIBLE);
 		}
 
 		//get push configs
-		pushConfigs = EMClient.getInstance().pushManager().getPushConfigs();
+		pushConfigs = getInstance().pushManager().getPushConfigs();
 
 		groupChangeListener = new GroupChangeListener();
-		EMClient.getInstance().groupManager().addGroupChangeListener(groupChangeListener);
+		getInstance().groupManager().addGroupChangeListener(groupChangeListener);
 		
 		titleBar.setTitle(group.getGroupName() + "(" + group.getMemberCount() + st);
 
@@ -183,12 +185,12 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		if (owner == null || owner.isEmpty()) {
 			return false;
 		}
-		return owner.equals(EMClient.getInstance().getCurrentUser());
+		return owner.equals(getInstance().getCurrentUser());
 	}
 
 	boolean isCurrentAdmin(EMGroup group) {
 		synchronized (adminList) {
-			String currentUser = EMClient.getInstance().getCurrentUser();
+			String currentUser = getInstance().getCurrentUser();
 			for (String admin : adminList) {
 				if (currentUser.equals(admin)) {
 					return true;
@@ -237,7 +239,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 	boolean isCanAddMember(EMGroup group) {
 		if (group.isMemberAllowToInvite() ||
-				isAdmin(EMClient.getInstance().getCurrentUser()) ||
+				isAdmin(getInstance().getCurrentUser()) ||
 				isCurrentOwner(group)) {
 			return true;
 		}
@@ -292,7 +294,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					new Thread(new Runnable() {
 						public void run() {
 							try {
-								EMClient.getInstance().groupManager().changeGroupName(groupId, returnData);
+								getInstance().groupManager().changeGroupName(groupId, returnData);
 								runOnUiThread(new Runnable() {
 									public void run() {
 								/*	titleBar.setTitle(group.getGroupName() + "(" + group.getMemberCount() + ")");
@@ -324,7 +326,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					new Thread(new Runnable() {
 						public void run() {
 							try {
-								EMClient.getInstance().groupManager().changeGroupDescription(groupId, returnData1);
+								getInstance().groupManager().changeGroupDescription(groupId, returnData1);
 								runOnUiThread(new Runnable() {
 									public void run() {
 										progressDialog.dismiss();
@@ -350,10 +352,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			}
 		}
 	}
-
+//更新群名称
 	private void updateGroupNameByHxid(String groupId, String returnData) {
-		Log.i("main","updateGroupNameByHxid:groupId"+groupId);
-		Log.i("main","updateGroupNameByHxid:returnData"+returnData);
 		model.updateGroupNameByHxid(GroupDetailsActivity.this, groupId, returnData, new OnCompleteListener<String>() {
 			@Override
 			public void onSuccess(String s) {
@@ -450,7 +450,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	 */
 	private void clearGroupHistory() {
 
-		EMConversation conversation = EMClient.getInstance().chatManager().getConversation(group.getGroupId(), EMConversationType.GroupChat);
+		EMConversation conversation = getInstance().chatManager().getConversation(group.getGroupId(), EMConversationType.GroupChat);
 		if (conversation != null) {
 			conversation.clearAllMessages();
 		}
@@ -466,14 +466,22 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					EMClient.getInstance().groupManager().leaveGroup(groupId);
+					getInstance().groupManager().leaveGroup(groupId);
 					runOnUiThread(new Runnable() {
 						public void run() {
-							progressDialog.dismiss();
-							setResult(RESULT_OK);
-							finish();
-							if(ChatActivity.activityInstance != null)
-							    ChatActivity.activityInstance.finish();
+							L.i("main","exitGrop,user="+SuperWeChatHelper.getInstance().getCurrentUsernName());
+							model.removeGroupMember(GroupDetailsActivity.this,groupId ,SuperWeChatHelper.getInstance().getCurrentUsernName(), new OnCompleteListener<String>() {
+								@Override
+								public void onSuccess(String result) {
+									L.i("main","exitGrop,result="+result+"groupId"+groupId);
+									exitSuccess();
+								}
+
+								@Override
+								public void onError(String error) {
+
+								}
+							});
 						}
 					});
 				} catch (final Exception e) {
@@ -488,23 +496,28 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		}).start();
 	}
 
+	private void exitSuccess() {
+		progressDialog.dismiss();
+		setResult(RESULT_OK);
+		finish();
+		if(ChatActivity.activityInstance != null)
+            ChatActivity.activityInstance.finish();
+	}
+
 	/**
 	 * 解散群组
 	 * 
 	 */
 	private void deleteGrop() {
 		final String st5 = getResources().getString(R.string.Dissolve_group_chat_tofail);
+		L.e("main","deleteGrop"+123);
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					EMClient.getInstance().groupManager().destroyGroup(groupId);
+					getInstance().groupManager().destroyGroup(groupId);
 					runOnUiThread(new Runnable() {
 						public void run() {
-							progressDialog.dismiss();
-							setResult(RESULT_OK);
-							finish();
-							if(ChatActivity.activityInstance != null)
-							    ChatActivity.activityInstance.finish();
+							removeGroup();
 						}
 					});
 				} catch (final Exception e) {
@@ -519,6 +532,21 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		}).start();
 	}
 
+	private void removeGroup() {
+		model.removeGroup(GroupDetailsActivity.this, groupId, new OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+
+				exitSuccess();
+				L.e("main","removeGroup"+result);
+			}
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+	}
+
 	/**
 	 * 增加群成员
 	 * 
@@ -531,19 +559,21 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			public void run() {
 				try {
 					// 创建者调用add方法
-					if (EMClient.getInstance().getCurrentUser().equals(group.getOwner())) {
-						EMClient.getInstance().groupManager().addUsersToGroup(groupId, newmembers);
+					if (getInstance().getCurrentUser().equals(group.getOwner())) {
+						getInstance().groupManager().addUsersToGroup(groupId, newmembers);
 					} else {
 						// 一般成员调用invite方法
-						EMClient.getInstance().groupManager().inviteUser(groupId, newmembers, null);
+						getInstance().groupManager().inviteUser(groupId, newmembers, null);
 					}
+
 					updateGroup();
 					refreshMembersAdapter();
 					runOnUiThread(new Runnable() {
 						public void run() {
-							titleBar.setTitle(group.getGroupName() + "(" + group.getMemberCount()
+							addGroupMember(newmembers,groupId);
+							/*titleBar.setTitle(group.getGroupName() + "(" + group.getMemberCount()
 									+ st);
-							progressDialog.dismiss();
+							progressDialog.dismiss();*/
 						}
 					});
 				} catch (final Exception e) {
@@ -600,7 +630,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	}
 
 	private void toggleBlockOfflineMsg() {
-		if(EMClient.getInstance().pushManager().getPushConfigs() == null){
+		if(getInstance().pushManager().getPushConfigs() == null){
 			return;
 		}
 		createProgressDialog();
@@ -614,9 +644,9 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
             public void run() {
                 try {
                     if(offlinePushSwitch.isSwitchOpen()) {
-                        EMClient.getInstance().pushManager().updatePushServiceForGroup(list, false);
+                        getInstance().pushManager().updatePushServiceForGroup(list, false);
                     }else{
-                        EMClient.getInstance().pushManager().updatePushServiceForGroup(list, true);
+                        getInstance().pushManager().updatePushServiceForGroup(list, true);
                     }
 					runOnUiThread(new Runnable() {
 						@Override
@@ -663,7 +693,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			new Thread(new Runnable() {
 		        public void run() {
 		            try {
-		                EMClient.getInstance().groupManager().unblockGroupMessage(groupId);
+		                getInstance().groupManager().unblockGroupMessage(groupId);
 		                runOnUiThread(new Runnable() {
 		                    public void run() {
 		                    	switchButton.closeSwitch();
@@ -696,7 +726,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			new Thread(new Runnable() {
 		        public void run() {
 		            try {
-		                EMClient.getInstance().groupManager().blockGroupMessage(groupId);
+		                getInstance().groupManager().blockGroupMessage(groupId);
 		                runOnUiThread(new Runnable() {
 		                    public void run() {
 		                    	switchButton.openSwitch();
@@ -747,32 +777,44 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							try {
 								switch (v.getId()) {
 									case R.id.menu_item_add_admin:
-										EMClient.getInstance().groupManager().addGroupAdmin(groupId, operationUserId);
+										getInstance().groupManager().addGroupAdmin(groupId, operationUserId);
 										break;
 									case R.id.menu_item_rm_admin:
-										EMClient.getInstance().groupManager().removeGroupAdmin(groupId, operationUserId);
+										getInstance().groupManager().removeGroupAdmin(groupId, operationUserId);
 										break;
 									case R.id.menu_item_remove_member:
-										EMClient.getInstance().groupManager().removeUserFromGroup(groupId, operationUserId);
+										getInstance().groupManager().removeUserFromGroup(groupId, operationUserId);
+										model.removeGroupMember(GroupDetailsActivity.this, operationUserId, groupId, new OnCompleteListener<String>() {
+											@Override
+											public void onSuccess(String result) {
+												L.e("main","menu_item_remove_member,result=="+result);
+											}
+
+											@Override
+											public void onError(String error) {
+
+											}
+										});
 										break;
 									case R.id.menu_item_add_to_blacklist:
-										EMClient.getInstance().groupManager().blockUser(groupId, operationUserId);
+										getInstance().groupManager().blockUser(groupId, operationUserId);
 										break;
 									case R.id.menu_item_remove_from_blacklist:
-										EMClient.getInstance().groupManager().unblockUser(groupId, operationUserId);
+										getInstance().groupManager().unblockUser(groupId, operationUserId);
+
 										break;
 									case R.id.menu_item_mute:
 										List<String> muteMembers = new ArrayList<String>();
 										muteMembers.add(operationUserId);
-										EMClient.getInstance().groupManager().muteGroupMembers(groupId, muteMembers, 20 * 60 * 1000);
+										getInstance().groupManager().muteGroupMembers(groupId, muteMembers, 20 * 60 * 1000);
 										break;
 									case R.id.menu_item_unmute:
 										List<String> list = new ArrayList<String>();
 										list.add(operationUserId);
-										EMClient.getInstance().groupManager().unMuteGroupMembers(groupId, list);
+										getInstance().groupManager().unMuteGroupMembers(groupId, list);
 										break;
 									case R.id.menu_item_transfer_owner:
-										EMClient.getInstance().groupManager().changeOwner(groupId, operationUserId);
+										getInstance().groupManager().changeOwner(groupId, operationUserId);
 										break;
 									default:
 										break;
@@ -1056,11 +1098,11 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			public void run() {
 				try {
 					if(pushConfigs == null){
-						EMClient.getInstance().pushManager().getPushConfigsFromServer();
+						getInstance().pushManager().getPushConfigsFromServer();
 					}
 
 					try {
-						group = EMClient.getInstance().groupManager().getGroupFromServer(groupId);
+						group = getInstance().groupManager().getGroupFromServer(groupId);
 
 						adminList.clear();
 						adminList.addAll(group.getAdminList());
@@ -1068,7 +1110,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						EMCursorResult<String> result = null;
 						do {
 							// page size set to 20 is convenient for testing, should be applied to big value
-							result = EMClient.getInstance().groupManager().fetchGroupMembers(groupId,
+							result = getInstance().groupManager().fetchGroupMembers(groupId,
 									result != null ? result.getCursor() : "",
 									20);
 							EMLog.d(TAG, "fetchGroupMembers result.size:" + result.getData().size());
@@ -1076,9 +1118,9 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						} while (result.getData().size() == 20);
 
 						muteList.clear();
-						muteList.addAll(EMClient.getInstance().groupManager().fetchGroupMuteList(groupId, 0, 200).keySet());
+						muteList.addAll(getInstance().groupManager().fetchGroupMuteList(groupId, 0, 200).keySet());
 						blackList.clear();
-						blackList.addAll(EMClient.getInstance().groupManager().fetchGroupBlackList(groupId, 0, 200));
+						blackList.addAll(getInstance().groupManager().fetchGroupBlackList(groupId, 0, 200));
 
 					} catch (Exception e) {
 						 //e.printStackTrace();  // User may have no permission for fetch mute, fetch black list operation
@@ -1098,7 +1140,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 									+ ")");
 							loadingPB.setVisibility(View.INVISIBLE);
 
-							if (EMClient.getInstance().getCurrentUser().equals(group.getOwner())) {
+							if (getInstance().getCurrentUser().equals(group.getOwner())) {
 								// 显示解散按钮
 								exitBtn.setVisibility(View.GONE);
 								deleteBtn.setVisibility(View.VISIBLE);
@@ -1115,7 +1157,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							} else {
 							    switchButton.closeSwitch();
 							}
-							List<String> disabledIds = EMClient.getInstance().pushManager().getNoPushGroups();
+							List<String> disabledIds = getInstance().pushManager().getNoPushGroups();
 							if(disabledIds != null && disabledIds.contains(groupId)){
 								offlinePushSwitch.openSwitch();
 							}else{
@@ -1157,7 +1199,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 	@Override
 	protected void onDestroy() {
-		EMClient.getInstance().groupManager().removeGroupChangeListener(groupChangeListener);
+		getInstance().groupManager().removeGroupChangeListener(groupChangeListener);
 		super.onDestroy();
 		instance = null;
 
@@ -1240,5 +1282,33 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
             updateGroup();
 	    }
     }
+	private void addGroupMember(String[] members, String groupId) {
+		EMLog.d(TAG, "onMemberExited");
+		StringBuilder sb = new StringBuilder();
+		for (String member : members) {
+			sb.append(member);
+			sb.append(",");
+		}
+		model.addGroupMembers(GroupDetailsActivity.this, sb.toString(), groupId, new OnCompleteListener<String>() {
+			@Override
+			public void onSuccess(String s) {
+				L.i("main","s="+s);
+				boolean isSuccess = false;
+				if (s != null) {
+					Result<Group> result = ResultUtils.getResultFromJson(s, Group.class);
+					if (result != null && result.isRetMsg()) {
+						titleBar.setTitle(group.getGroupName() + "(" + group.getMemberCount()
+								+ st);
+						progressDialog.dismiss();
+					}
+				}
+
+			}
+
+			@Override
+			public void onError(String error) {
+			}
+		});
+	}
 
 }

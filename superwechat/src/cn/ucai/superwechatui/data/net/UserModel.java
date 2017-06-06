@@ -139,18 +139,34 @@ public class UserModel implements IUserModel {
                 .execute(listener);
     }
 
- /*   @Override
-    public void downLoadAvatar(Context context, String hxid, String avatarType, String avatarSuffix, OnCompleteListener<String> listener) {
+    @Override
+    public void addGroupMember(Context context, String name, String hxid, OnCompleteListener<String> listener) {
         OkHttpUtils<String> utils =new OkHttpUtils<>(context);
-        utils.setRequestUrl(I.REQUEST_DOWNLOAD_AVATAR)
-                .addParam(I.Group.HX_ID,hxid)
-                .addParam(I.AVATAR_TYPE,avatarType)
-                .addParam("m_avatar_suffix",avatarSuffix)
+        utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBER)
+                .addParam(I.Member.GROUP_HX_ID,hxid)
+                .addParam(I.Member.USER_NAME,name)
                 .targetClass(String.class)
                 .execute(listener);
-    }*/
+    }
 
+    @Override
+    public void removeGroupMember(Context context, String username, String hxid, OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils =new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_DELETE_GROUP_MEMBER)
+                .addParam(I.Member.GROUP_ID,hxid)
+                .addParam(I.Member.USER_NAME,username)
+                .targetClass(String.class)
+                .execute(listener);
+    }
 
+    @Override
+    public void removeGroup(Context context, String hxid, OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils =new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_DELETE_GROUP_BY_HXID)
+                .addParam(I.Group.HX_ID,hxid)
+                .targetClass(String.class)
+                .execute(listener);
+    }
     @Override
     public void unRegister(Context context, String username, OnCompleteListener listener) {
         OkHttpUtils<String > utils =new OkHttpUtils<>(context);

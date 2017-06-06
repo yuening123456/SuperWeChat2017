@@ -4,6 +4,8 @@ package cn.ucai.superwechatui.data.net;
 import android.content.Context;
 import android.view.GestureDetector;
 
+import com.baidu.platform.comapi.map.C;
+
 import java.io.File;
 
 import cn.ucai.easeui.domain.User;
@@ -30,4 +32,7 @@ public interface IUserModel {
     void findAllGroup(Context context,String name,OnCompleteListener<String> listener);
     void addGroupMembers(Context context,String usernames,String hxid, OnCompleteListener<String> listener);
     void updateGroupNameByHxid(Context context,String hxid,String newGroupName,OnCompleteListener<String> listener);
+    void addGroupMember(Context cotext,String name,String hxid,OnCompleteListener<String> listener);
+    void removeGroupMember(Context context,String username,String hxid,OnCompleteListener<String> listener);
+    void removeGroup(Context context,String hxid,OnCompleteListener<String> listener);
 }

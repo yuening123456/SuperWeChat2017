@@ -25,7 +25,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -40,36 +40,38 @@ import com.hyphenate.exceptions.HyphenateException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ucai.easeui.utils.EaseUserUtils;
 import cn.ucai.superwechatui.R;
 
+
 public class PublicGroupsActivity extends BaseActivity {
-	private ProgressBar pb;
-	private ListView listView;
-	private GroupsAdapter adapter;
-	
-	private List<EMGroupInfo> groupsList;
-	private boolean isLoading;
-	private boolean isFirstLoading = true;
-	private boolean hasMoreData = true;
-	private String cursor;
-	private final int pagesize = 20;
+    private ProgressBar pb;
+    private ListView listView;
+    private GroupsAdapter adapter;
+
+    private List<EMGroupInfo> groupsList;
+    private boolean isLoading;
+    private boolean isFirstLoading = true;
+    private boolean hasMoreData = true;
+    private String cursor;
+    private final int pagesize = 20;
     private LinearLayout footLoadingLayout;
     private ProgressBar footLoadingPB;
     private TextView footLoadingText;
-    private Button searchBtn;
-    
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.em_activity_public_groups);
 
-		pb = (ProgressBar) findViewById(R.id.progressBar);
-		listView = (ListView) findViewById(R.id.list);
-		groupsList = new ArrayList<EMGroupInfo>();
-		searchBtn = (Button) findViewById(R.id.btn_search);
-		
-		View footView = getLayoutInflater().inflate(R.layout.em_listview_footer_view, listView, false);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.em_activity_public_groups);
+        super.onCreate(savedInstanceState);
+        showLeftBack();
+        titleBar.getRightLayout().setVisibility(View.INVISIBLE);
+
+        pb = (ProgressBar) findViewById(R.id.progressBar);
+        listView = (ListView) findViewById(R.id.list);
+        groupsList = new ArrayList<EMGroupInfo>();
+
+        View footView = getLayoutInflater().inflate(R.layout.em_listview_footer_view, listView, false);
         footLoadingLayout = (LinearLayout) footView.findViewById(R.id.loading_layout);
         footLoadingPB = (ProgressBar)footView.findViewById(R.id.loading_bar);
         footLoadingText = (TextView) footView.findViewById(R.id.loading_text);
@@ -77,6 +79,7 @@ public class PublicGroupsActivity extends BaseActivity {
         footLoadingLayout.setVisibility(View.GONE);
 
         loadAndShowData();
+        setListener();
 
         listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -87,7 +90,7 @@ public class PublicGroupsActivity extends BaseActivity {
             }
         });
         listView.setOnScrollListener(new OnScrollListener() {
-            
+
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){
@@ -99,21 +102,26 @@ public class PublicGroupsActivity extends BaseActivity {
                     }
                 }
             }
-            
+
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                
+
             }
         });
-        
-	}
 
-	public void search(View view){
-	    startActivity(new Intent(this, PublicGroupsSeachActivity.class));
-	}
-	
-	private void loadAndShowData(){
-	    new Thread(new Runnable() {
+    }
+
+    private void setListener() {
+        titleBar.getRightLayout().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(PublicGroupsActivity.this, PublicGroupsSeachActivity.class));
+            }
+        });
+    }
+
+    private void loadAndShowData(){
+        new Thread(new Runnable() {
 
             public void run() {
                 try {
@@ -123,7 +131,7 @@ public class PublicGroupsActivity extends BaseActivity {
                     runOnUiThread(new Runnable() {
 
                         public void run() {
-                            searchBtn.setVisibility(View.VISIBLE);
+                            titleBar.getRightLayout().setVisibility(View.VISIBLE);
                             groupsList.addAll(returnGroups);
                             if(returnGroups.size() != 0){
                                 cursor = result.getCursor();
@@ -160,33 +168,35 @@ public class PublicGroupsActivity extends BaseActivity {
                 }
             }
         }).start();
-	}
-	/**
-	 * adapter
-	 *
-	 */
-	private class GroupsAdapter extends ArrayAdapter<EMGroupInfo> {
+    }
+    /**
+     * adapter
+     *
+     */
+    private class GroupsAdapter extends ArrayAdapter<EMGroupInfo> {
 
-		private LayoutInflater inflater;
+        private LayoutInflater inflater;
 
-		public GroupsAdapter(Context context, int res, List<EMGroupInfo> groups) {
-			super(context, res, groups);
-			this.inflater = LayoutInflater.from(context);
-		}
+        public GroupsAdapter(Context context, int res, List<EMGroupInfo> groups) {
+            super(context, res, groups);
+            this.inflater = LayoutInflater.from(context);
+        }
 
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.em_row_group, parent, false);
-			}
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.em_row_group, parent, false);
+            }
 
-			((TextView) convertView.findViewById(R.id.name)).setText(getItem(position).getGroupName());
+            ((TextView) convertView.findViewById(R.id.name)).setText(getItem(position).getGroupName());
+            EaseUserUtils.setGroupAvatarByHxid(
+                    getContext(),getItem(position).getGroupId(),
+                    (ImageView)convertView.findViewById(R.id.avatar));
+            return convertView;
+        }
+    }
 
-			return convertView;
-		}
-	}
-	
-	public void back(View view){
-		finish();
-	}
+    public void back(View view){
+        finish();
+    }
 }
