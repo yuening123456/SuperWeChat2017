@@ -861,8 +861,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			holder.imageView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					getUser(username);
-					//startActivity(new Intent(getContext(),ProfilesActivity.class).putExtra(I.User.USER_NAME,username));
+					//getUser(username);
+					startActivity(new Intent(getContext(),ProfilesActivity.class).putExtra(I.User.USER_NAME,username));
 				}
 			});
 			LinearLayout id_background = (LinearLayout) convertView.findViewById(R.id.l_bg_id);
@@ -990,7 +990,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				holder.imageView.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						getUser(username);
+						//getUser(username);
+						startActivity(new Intent(getContext(),ProfilesActivity.class).putExtra(I.User.USER_NAME,username));
 					}
 				});
 

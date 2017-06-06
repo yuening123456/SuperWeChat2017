@@ -129,6 +129,16 @@ public class UserModel implements IUserModel {
                 .execute(listener);
     }
 
+    @Override
+    public void updateGroupNameByHxid(Context context, String hxid, String newGroupName, OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils =new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_UPDATE_GROUP_NAME_BYHXID)
+                .addParam(I.Group.HX_ID,hxid)
+                .addParam(I.Group.NAME,newGroupName)
+                .targetClass(String.class)
+                .execute(listener);
+    }
+
  /*   @Override
     public void downLoadAvatar(Context context, String hxid, String avatarType, String avatarSuffix, OnCompleteListener<String> listener) {
         OkHttpUtils<String> utils =new OkHttpUtils<>(context);

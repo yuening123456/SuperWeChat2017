@@ -266,7 +266,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         /*Intent intent = new Intent(getActivity(), UserProfileActivity.class);
         intent.putExtra("username", username);
         startActivity(intent);*/
-        model.loadUserInfo(getActivity(), username, new OnCompleteListener<String>() {
+     /*   model.loadUserInfo(getActivity(), username, new OnCompleteListener<String>() {
             @Override
             public void onSuccess(String s) {
                 boolean isSuccess=false;
@@ -286,8 +286,8 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
             @Override
             public void onError(String error) {
             }
-        });
-       // MFGT.gotoProfiles(getActivity(),username);
+        });*/
+        MFGT.gotoProfiles(getActivity(),username);
     }
     
     @Override

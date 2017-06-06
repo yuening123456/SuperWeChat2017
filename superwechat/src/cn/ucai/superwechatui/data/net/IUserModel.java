@@ -29,4 +29,5 @@ public interface IUserModel {
                      boolean isPublic,boolean isInvites,File file, OnCompleteListener<String> listener);
     void findAllGroup(Context context,String name,OnCompleteListener<String> listener);
     void addGroupMembers(Context context,String usernames,String hxid, OnCompleteListener<String> listener);
+    void updateGroupNameByHxid(Context context,String hxid,String newGroupName,OnCompleteListener<String> listener);
 }
